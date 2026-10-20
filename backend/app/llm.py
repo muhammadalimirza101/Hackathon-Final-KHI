@@ -1,8 +1,12 @@
 """Shared OpenAI model (via ADK LiteLlm) and run_agent(), the one helper everything uses to run an ADK agent."""
+import os
 import uuid
 from typing import Any, Optional
 
-import litellm
+# Use LiteLLM's bundled model cost map instead of fetching it from GitHub on first call (slow / can time out).
+os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+
+import litellm  # noqa: E402
 from google.adk.agents import BaseAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.runners import Runner

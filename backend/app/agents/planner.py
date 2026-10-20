@@ -23,6 +23,7 @@ Each step has exactly one intent from this list:
 
 Rules:
 - Most requests are ONE step. Only split when the user clearly asks for several different things.
+- Never add steps the user did not ask for. An attached file does NOT imply data_cleaning; use data_cleaning only when the user asks to clean/fix data.
 - "task" is ONE short self-contained sentence for the specialist agent (keep key details from the request, add nothing else).
 - depends_on lists ids of earlier steps whose output the step needs (e.g. a report about analysis results).
 - Ids are s1, s2, s3 ... in execution order.
@@ -30,7 +31,8 @@ Rules:
 
 Examples:
 "What is the leave policy for Hajj?" -> {{"steps":[{{"id":"s1","intent":"hr_policy","task":"Explain the leave policy for employees going for Hajj","depends_on":[]}}]}}
-"Is this code leaking any API keys?" -> {{"steps":[{{"id":"s1","intent":"security_scan","task":"Scan the attached code for exposed API keys and secrets","depends_on":[]}}]}}
+"Analyze the sales trend in this file" (file attached) -> {{"steps":[{{"id":"s1","intent":"sales_report","task":"Analyze the sales trend in the attached data","depends_on":[]}}]}}
+"Is this code leaking any API keys?" ->{{"steps":[{{"id":"s1","intent":"security_scan","task":"Scan the attached code for exposed API keys and secrets","depends_on":[]}}]}}
 "Clean this sales data, find the top products and write a report" -> {{"steps":[{{"id":"s1","intent":"data_cleaning","task":"Clean the attached sales CSV","depends_on":[]}},{{"id":"s2","intent":"sales_report","task":"Find the top products and sales trends in the cleaned data","depends_on":["s1"]}},{{"id":"s3","intent":"report_generation","task":"Write a sales report from the analysis","depends_on":["s2"]}}]}}
 """
 

@@ -6,7 +6,11 @@ One entry point for 12 specialist AI agents. The user types a request in plain l
 
 > In the dataset's own historical logs, only **18 of 200 requests (9%)** reached the right agent and 25% had to be rerouted.
 
-## Architecture
+**Team:** Muhammad Ali · Hammad-Ullah
+
+![Architecture](docs/architecture.png)
+
+## Architecture (text version)
 
 ```
 User (browser) ── query + optional attachment (CSV / code / text)
@@ -103,6 +107,9 @@ gcloud run deploy meta-router --source . --region us-central1 --allow-unauthenti
 - Hundreds of agents: embedding search picks top candidates, the router scores only those.
 - A small classifier for simple single-intent queries, with the LLM planner only for compound or unclear ones, cuts most of the overhead.
 - Pub/Sub for long-running jobs; Cloud Run autoscaling; learn routing weights from user satisfaction data.
+
+## Presentation
+Script, demo steps and Q&A prep: [docs/PRESENTATION.md](docs/PRESENTATION.md).
 
 ## Repository layout
 ```
