@@ -1,0 +1,179 @@
+[
+  {
+    "agent_id": "AGT-001",
+    "name": "FinanceBot",
+    "description": "FinanceBot handles tasks related to finance workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4"
+    ],
+    "avg_response_time_ms": 3178,
+    "success_rate": 0.985,
+    "usage_count_30d": 1415,
+    "status": "degraded"
+  },
+  {
+    "agent_id": "AGT-002",
+    "name": "HRAssist",
+    "description": "HRAssist handles tasks related to hrassistance workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2"
+    ],
+    "avg_response_time_ms": 2234,
+    "success_rate": 0.892,
+    "usage_count_30d": 4265,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-003",
+    "name": "LegalReview",
+    "description": "LegalReview handles tasks related to legalreview workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4",
+      "cap_5"
+    ],
+    "avg_response_time_ms": 1345,
+    "success_rate": 0.931,
+    "usage_count_30d": 2573,
+    "status": "maintenance"
+  },
+  {
+    "agent_id": "AGT-004",
+    "name": "CodeHelper",
+    "description": "CodeHelper handles tasks related to codehelper workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4"
+    ],
+    "avg_response_time_ms": 4609,
+    "success_rate": 0.921,
+    "usage_count_30d": 821,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-005",
+    "name": "DataCleaner",
+    "description": "DataCleaner handles tasks related to datacleaner workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3"
+    ],
+    "avg_response_time_ms": 500,
+    "success_rate": 0.876,
+    "usage_count_30d": 2465,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-006",
+    "name": "SalesInsight",
+    "description": "SalesInsight handles tasks related to salesinsight workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3"
+    ],
+    "avg_response_time_ms": 4722,
+    "success_rate": 0.88,
+    "usage_count_30d": 2951,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-007",
+    "name": "ComplianceChecker",
+    "description": "ComplianceChecker handles tasks related to compliancechecker workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3"
+    ],
+    "avg_response_time_ms": 3657,
+    "success_rate": 0.86,
+    "usage_count_30d": 2098,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-008",
+    "name": "ReportWriter",
+    "description": "ReportWriter handles tasks related to reportwriter workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4",
+      "cap_5"
+    ],
+    "avg_response_time_ms": 1537,
+    "success_rate": 0.906,
+    "usage_count_30d": 692,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-009",
+    "name": "MeetingSummarizer",
+    "description": "MeetingSummarizer handles tasks related to meetingsummarizer workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4",
+      "cap_5"
+    ],
+    "avg_response_time_ms": 1373,
+    "success_rate": 0.925,
+    "usage_count_30d": 588,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-010",
+    "name": "TranslationAgent",
+    "description": "TranslationAgent handles tasks related to translationagent workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3"
+    ],
+    "avg_response_time_ms": 3248,
+    "success_rate": 0.929,
+    "usage_count_30d": 4199,
+    "status": "maintenance"
+  },
+  {
+    "agent_id": "AGT-011",
+    "name": "SecurityScanner",
+    "description": "SecurityScanner handles tasks related to securityscanner workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3"
+    ],
+    "avg_response_time_ms": 3638,
+    "success_rate": 0.965,
+    "usage_count_30d": 2601,
+    "status": "degraded"
+  },
+  {
+    "agent_id": "AGT-012",
+    "name": "CustomerFeedback",
+    "description": "CustomerFeedback handles tasks related to customerfeedback workflows.",
+    "capabilities": [
+      "cap_1",
+      "cap_2",
+      "cap_3",
+      "cap_4",
+      "cap_5"
+    ],
+    "avg_response_time_ms": 412,
+    "success_rate": 0.985,
+    "usage_count_30d": 2037,
+    "status": "active"
+  }
+]

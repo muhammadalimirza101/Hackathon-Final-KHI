@@ -1,0 +1,201 @@
+query_id,user_id,timestamp,raw_query,detected_intent,routed_to_agent,response_time_ms,user_satisfaction,was_rerouted
+Q-0001,USR-800,2026-08-09T09:34:00,Sample query about hr policy topic #1,hr_policy,MeetingSummarizer,3532,1,False
+Q-0002,USR-896,2026-08-21T09:23:00,Sample query about sales report topic #2,sales_report,DataCleaner,1398,2,False
+Q-0003,USR-487,2026-08-01T09:24:00,Sample query about code help topic #3,code_help,HRAssist,6612,1,False
+Q-0004,USR-197,2026-08-17T12:37:00,Sample query about report generation topic #4,report_generation,MeetingSummarizer,3058,5,False
+Q-0005,USR-149,2026-08-18T12:38:00,Sample query about hr policy topic #5,hr_policy,LegalReview,2805,4,False
+Q-0006,USR-664,2026-08-12T18:50:00,Sample query about meeting notes topic #6,meeting_notes,TranslationAgent,7425,4,True
+Q-0007,USR-803,2026-08-19T10:16:00,Sample query about finance analysis topic #7,finance_analysis,MeetingSummarizer,6042,2,False
+Q-0008,USR-154,2026-08-05T14:36:00,Sample query about data cleaning topic #8,data_cleaning,CustomerFeedback,5436,3,False
+Q-0009,USR-287,2026-08-22T17:26:00,Sample query about report generation topic #9,report_generation,ReportWriter,3099,4,False
+Q-0010,USR-412,2026-08-09T14:33:00,Sample query about code help topic #10,code_help,SecurityScanner,7228,1,False
+Q-0011,USR-749,2026-08-14T13:54:00,Sample query about hr policy topic #11,hr_policy,HRAssist,828,2,False
+Q-0012,USR-861,2026-08-06T17:03:00,Sample query about hr policy topic #12,hr_policy,DataCleaner,4739,4,False
+Q-0013,USR-591,2026-08-14T18:32:00,Sample query about legal review topic #13,legal_review,ReportWriter,4418,5,False
+Q-0014,USR-951,2026-08-13T08:39:00,Sample query about code help topic #14,code_help,CustomerFeedback,259,4,False
+Q-0015,USR-800,2026-08-08T18:58:00,Sample query about meeting notes topic #15,meeting_notes,TranslationAgent,546,5,True
+Q-0016,USR-330,2026-08-06T18:59:00,Sample query about meeting notes topic #16,meeting_notes,LegalReview,815,3,False
+Q-0017,USR-607,2026-08-17T13:03:00,Sample query about compliance check topic #17,compliance_check,ComplianceChecker,1596,3,False
+Q-0018,USR-971,2026-08-11T18:15:00,Sample query about meeting notes topic #18,meeting_notes,HRAssist,2576,3,True
+Q-0019,USR-855,2026-08-10T12:13:00,Sample query about finance analysis topic #19,finance_analysis,SecurityScanner,4859,4,False
+Q-0020,USR-945,2026-08-30T12:59:00,Sample query about meeting notes topic #20,meeting_notes,FinanceBot,7862,4,True
+Q-0021,USR-571,2026-08-02T13:00:00,Sample query about translation topic #21,translation,SalesInsight,2644,3,False
+Q-0022,USR-511,2026-08-01T13:56:00,Sample query about legal review topic #22,legal_review,SalesInsight,272,1,True
+Q-0023,USR-626,2026-08-16T11:05:00,Sample query about meeting notes topic #23,meeting_notes,LegalReview,3564,1,True
+Q-0024,USR-331,2026-08-01T10:49:00,Sample query about data cleaning topic #24,data_cleaning,ReportWriter,3438,3,False
+Q-0025,USR-649,2026-08-12T14:57:00,Sample query about legal review topic #25,legal_review,DataCleaner,1090,4,True
+Q-0026,USR-105,2026-08-06T10:22:00,Sample query about compliance check topic #26,compliance_check,SalesInsight,7438,2,False
+Q-0027,USR-504,2026-08-07T12:02:00,Sample query about legal review topic #27,legal_review,ComplianceChecker,6294,3,False
+Q-0028,USR-781,2026-08-06T18:12:00,Sample query about report generation topic #28,report_generation,DataCleaner,1173,4,True
+Q-0029,USR-432,2026-08-18T15:51:00,Sample query about legal review topic #29,legal_review,ComplianceChecker,4311,4,False
+Q-0030,USR-229,2026-08-04T09:50:00,Sample query about finance analysis topic #30,finance_analysis,LegalReview,3019,5,False
+Q-0031,USR-794,2026-08-25T18:15:00,Sample query about finance analysis topic #31,finance_analysis,SalesInsight,3719,5,False
+Q-0032,USR-597,2026-08-14T15:18:00,Sample query about data cleaning topic #32,data_cleaning,HRAssist,6433,4,False
+Q-0033,USR-291,2026-08-20T10:46:00,Sample query about meeting notes topic #33,meeting_notes,CodeHelper,2503,1,False
+Q-0034,USR-303,2026-08-23T11:42:00,Sample query about compliance check topic #34,compliance_check,ReportWriter,5987,1,False
+Q-0035,USR-334,2026-08-07T17:40:00,Sample query about legal review topic #35,legal_review,HRAssist,1283,4,False
+Q-0036,USR-536,2026-08-09T11:59:00,Sample query about legal review topic #36,legal_review,FinanceBot,5250,2,False
+Q-0037,USR-637,2026-08-28T08:24:00,Sample query about compliance check topic #37,compliance_check,DataCleaner,5935,2,False
+Q-0038,USR-622,2026-08-11T14:30:00,Sample query about finance analysis topic #38,finance_analysis,ComplianceChecker,5474,1,False
+Q-0039,USR-459,2026-08-04T12:23:00,Sample query about data cleaning topic #39,data_cleaning,CustomerFeedback,3624,2,False
+Q-0040,USR-100,2026-08-29T08:11:00,Sample query about finance analysis topic #40,finance_analysis,FinanceBot,5610,3,False
+Q-0041,USR-203,2026-08-10T15:17:00,Sample query about translation topic #41,translation,ComplianceChecker,1714,3,True
+Q-0042,USR-199,2026-08-12T13:19:00,Sample query about hr policy topic #42,hr_policy,SecurityScanner,311,5,False
+Q-0043,USR-860,2026-08-11T13:47:00,Sample query about sales report topic #43,sales_report,TranslationAgent,4532,5,False
+Q-0044,USR-698,2026-08-08T18:17:00,Sample query about code help topic #44,code_help,ComplianceChecker,914,1,False
+Q-0045,USR-700,2026-08-21T17:07:00,Sample query about finance analysis topic #45,finance_analysis,SecurityScanner,6896,2,False
+Q-0046,USR-176,2026-08-23T15:59:00,Sample query about hr policy topic #46,hr_policy,MeetingSummarizer,5270,3,False
+Q-0047,USR-646,2026-08-24T15:48:00,Sample query about code help topic #47,code_help,CustomerFeedback,1458,1,False
+Q-0048,USR-998,2026-08-07T14:35:00,Sample query about data cleaning topic #48,data_cleaning,MeetingSummarizer,3045,3,True
+Q-0049,USR-169,2026-08-21T09:58:00,Sample query about compliance check topic #49,compliance_check,ReportWriter,3632,5,False
+Q-0050,USR-396,2026-08-06T17:17:00,Sample query about legal review topic #50,legal_review,FinanceBot,4838,1,False
+Q-0051,USR-991,2026-08-24T14:31:00,Sample query about meeting notes topic #51,meeting_notes,MeetingSummarizer,814,2,True
+Q-0052,USR-898,2026-08-25T16:24:00,Sample query about meeting notes topic #52,meeting_notes,ComplianceChecker,3483,5,False
+Q-0053,USR-685,2026-08-07T10:00:00,Sample query about legal review topic #53,legal_review,CodeHelper,5050,1,True
+Q-0054,USR-972,2026-08-17T16:16:00,Sample query about data cleaning topic #54,data_cleaning,CodeHelper,2627,3,False
+Q-0055,USR-343,2026-08-06T11:02:00,Sample query about meeting notes topic #55,meeting_notes,DataCleaner,520,2,False
+Q-0056,USR-757,2026-08-30T10:17:00,Sample query about finance analysis topic #56,finance_analysis,CodeHelper,6945,2,False
+Q-0057,USR-477,2026-08-01T18:22:00,Sample query about translation topic #57,translation,SalesInsight,881,5,False
+Q-0058,USR-401,2026-08-24T10:26:00,Sample query about translation topic #58,translation,SalesInsight,669,1,False
+Q-0059,USR-116,2026-08-08T12:11:00,Sample query about data cleaning topic #59,data_cleaning,MeetingSummarizer,5584,5,False
+Q-0060,USR-990,2026-08-24T14:41:00,Sample query about data cleaning topic #60,data_cleaning,SecurityScanner,5396,5,False
+Q-0061,USR-375,2026-08-27T15:14:00,Sample query about sales report topic #61,sales_report,CodeHelper,4964,4,False
+Q-0062,USR-477,2026-08-15T11:46:00,Sample query about compliance check topic #62,compliance_check,LegalReview,7590,4,False
+Q-0063,USR-935,2026-08-16T10:29:00,Sample query about legal review topic #63,legal_review,LegalReview,1747,5,True
+Q-0064,USR-121,2026-08-24T10:41:00,Sample query about data cleaning topic #64,data_cleaning,DataCleaner,1534,2,True
+Q-0065,USR-246,2026-08-22T17:12:00,Sample query about hr policy topic #65,hr_policy,HRAssist,3693,2,True
+Q-0066,USR-841,2026-08-30T18:25:00,Sample query about hr policy topic #66,hr_policy,MeetingSummarizer,1324,1,False
+Q-0067,USR-946,2026-08-13T14:01:00,Sample query about hr policy topic #67,hr_policy,FinanceBot,6454,1,False
+Q-0068,USR-742,2026-08-08T09:17:00,Sample query about legal review topic #68,legal_review,TranslationAgent,310,1,False
+Q-0069,USR-307,2026-08-18T13:54:00,Sample query about hr policy topic #69,hr_policy,LegalReview,4135,5,True
+Q-0070,USR-590,2026-08-27T10:19:00,Sample query about sales report topic #70,sales_report,LegalReview,2197,1,False
+Q-0071,USR-944,2026-08-21T16:07:00,Sample query about finance analysis topic #71,finance_analysis,FinanceBot,1042,5,False
+Q-0072,USR-245,2026-08-04T16:56:00,Sample query about compliance check topic #72,compliance_check,FinanceBot,7672,2,False
+Q-0073,USR-461,2026-08-08T14:24:00,Sample query about legal review topic #73,legal_review,SecurityScanner,2549,2,True
+Q-0074,USR-212,2026-08-22T09:31:00,Sample query about legal review topic #74,legal_review,CodeHelper,1033,3,False
+Q-0075,USR-469,2026-08-03T17:21:00,Sample query about hr policy topic #75,hr_policy,HRAssist,7536,1,False
+Q-0076,USR-714,2026-08-06T14:33:00,Sample query about sales report topic #76,sales_report,LegalReview,5765,4,False
+Q-0077,USR-739,2026-08-29T18:43:00,Sample query about data cleaning topic #77,data_cleaning,DataCleaner,3053,1,False
+Q-0078,USR-371,2026-08-30T15:42:00,Sample query about sales report topic #78,sales_report,CustomerFeedback,6742,1,False
+Q-0079,USR-427,2026-08-28T10:49:00,Sample query about legal review topic #79,legal_review,LegalReview,3399,4,True
+Q-0080,USR-537,2026-08-27T09:07:00,Sample query about translation topic #80,translation,CustomerFeedback,2481,2,False
+Q-0081,USR-461,2026-08-11T10:11:00,Sample query about compliance check topic #81,compliance_check,SalesInsight,4248,4,True
+Q-0082,USR-241,2026-08-23T14:38:00,Sample query about sales report topic #82,sales_report,SecurityScanner,7749,2,True
+Q-0083,USR-646,2026-08-14T16:31:00,Sample query about meeting notes topic #83,meeting_notes,ReportWriter,4562,5,False
+Q-0084,USR-639,2026-08-13T09:37:00,Sample query about compliance check topic #84,compliance_check,TranslationAgent,6561,2,False
+Q-0085,USR-971,2026-08-08T13:00:00,Sample query about code help topic #85,code_help,FinanceBot,3168,5,True
+Q-0086,USR-469,2026-08-05T09:03:00,Sample query about sales report topic #86,sales_report,LegalReview,2614,4,False
+Q-0087,USR-348,2026-08-27T16:59:00,Sample query about compliance check topic #87,compliance_check,CodeHelper,6981,2,False
+Q-0088,USR-486,2026-08-24T10:07:00,Sample query about legal review topic #88,legal_review,CustomerFeedback,415,4,False
+Q-0089,USR-175,2026-08-02T09:42:00,Sample query about translation topic #89,translation,ReportWriter,7060,5,False
+Q-0090,USR-180,2026-08-01T10:23:00,Sample query about legal review topic #90,legal_review,CodeHelper,831,1,True
+Q-0091,USR-866,2026-08-05T10:30:00,Sample query about legal review topic #91,legal_review,MeetingSummarizer,5922,3,True
+Q-0092,USR-393,2026-08-14T13:28:00,Sample query about finance analysis topic #92,finance_analysis,HRAssist,1477,1,False
+Q-0093,USR-111,2026-08-20T10:32:00,Sample query about legal review topic #93,legal_review,ComplianceChecker,7021,4,True
+Q-0094,USR-613,2026-08-18T12:58:00,Sample query about translation topic #94,translation,DataCleaner,6011,2,True
+Q-0095,USR-634,2026-08-30T10:17:00,Sample query about hr policy topic #95,hr_policy,ComplianceChecker,7991,2,False
+Q-0096,USR-501,2026-08-13T17:03:00,Sample query about code help topic #96,code_help,LegalReview,6937,5,False
+Q-0097,USR-768,2026-08-27T15:30:00,Sample query about sales report topic #97,sales_report,SecurityScanner,3518,4,False
+Q-0098,USR-299,2026-08-02T13:41:00,Sample query about compliance check topic #98,compliance_check,DataCleaner,1088,1,False
+Q-0099,USR-128,2026-08-12T17:49:00,Sample query about sales report topic #99,sales_report,CodeHelper,2511,2,False
+Q-0100,USR-874,2026-08-03T11:38:00,Sample query about finance analysis topic #100,finance_analysis,DataCleaner,1737,5,False
+Q-0101,USR-187,2026-08-21T08:15:00,Sample query about data cleaning topic #101,data_cleaning,TranslationAgent,4826,1,True
+Q-0102,USR-416,2026-08-02T08:20:00,Sample query about hr policy topic #102,hr_policy,FinanceBot,3121,3,True
+Q-0103,USR-843,2026-08-17T11:20:00,Sample query about compliance check topic #103,compliance_check,SalesInsight,1261,1,False
+Q-0104,USR-926,2026-08-14T16:06:00,Sample query about meeting notes topic #104,meeting_notes,LegalReview,394,5,True
+Q-0105,USR-397,2026-08-16T17:55:00,Sample query about finance analysis topic #105,finance_analysis,LegalReview,1441,4,False
+Q-0106,USR-320,2026-08-29T18:05:00,Sample query about code help topic #106,code_help,SecurityScanner,5559,2,False
+Q-0107,USR-767,2026-08-17T16:46:00,Sample query about translation topic #107,translation,MeetingSummarizer,7820,3,True
+Q-0108,USR-468,2026-08-26T10:21:00,Sample query about data cleaning topic #108,data_cleaning,TranslationAgent,7211,4,False
+Q-0109,USR-313,2026-08-29T18:24:00,Sample query about code help topic #109,code_help,TranslationAgent,5171,1,False
+Q-0110,USR-924,2026-08-19T18:31:00,Sample query about hr policy topic #110,hr_policy,FinanceBot,1368,3,False
+Q-0111,USR-273,2026-08-16T09:29:00,Sample query about sales report topic #111,sales_report,DataCleaner,1522,1,False
+Q-0112,USR-172,2026-08-19T13:22:00,Sample query about hr policy topic #112,hr_policy,LegalReview,6021,4,False
+Q-0113,USR-765,2026-08-16T12:48:00,Sample query about report generation topic #113,report_generation,LegalReview,7899,1,True
+Q-0114,USR-510,2026-08-02T13:54:00,Sample query about data cleaning topic #114,data_cleaning,ComplianceChecker,7220,5,False
+Q-0115,USR-421,2026-08-15T13:32:00,Sample query about translation topic #115,translation,SalesInsight,883,4,True
+Q-0116,USR-759,2026-08-09T18:02:00,Sample query about translation topic #116,translation,FinanceBot,6270,2,False
+Q-0117,USR-262,2026-08-05T09:18:00,Sample query about compliance check topic #117,compliance_check,TranslationAgent,3470,1,False
+Q-0118,USR-457,2026-08-13T15:42:00,Sample query about hr policy topic #118,hr_policy,ReportWriter,4037,5,True
+Q-0119,USR-506,2026-08-04T09:11:00,Sample query about hr policy topic #119,hr_policy,ComplianceChecker,1834,4,False
+Q-0120,USR-597,2026-08-03T13:21:00,Sample query about translation topic #120,translation,CodeHelper,5953,4,False
+Q-0121,USR-259,2026-08-09T15:02:00,Sample query about meeting notes topic #121,meeting_notes,ReportWriter,1392,2,False
+Q-0122,USR-163,2026-08-19T08:38:00,Sample query about compliance check topic #122,compliance_check,SalesInsight,6668,4,True
+Q-0123,USR-876,2026-08-07T08:13:00,Sample query about finance analysis topic #123,finance_analysis,SecurityScanner,3664,3,False
+Q-0124,USR-170,2026-08-21T10:05:00,Sample query about legal review topic #124,legal_review,DataCleaner,3518,1,False
+Q-0125,USR-637,2026-08-28T15:55:00,Sample query about compliance check topic #125,compliance_check,CodeHelper,5685,3,False
+Q-0126,USR-450,2026-08-27T08:05:00,Sample query about compliance check topic #126,compliance_check,DataCleaner,1547,2,False
+Q-0127,USR-805,2026-08-14T15:30:00,Sample query about meeting notes topic #127,meeting_notes,LegalReview,5907,4,False
+Q-0128,USR-674,2026-08-30T17:24:00,Sample query about finance analysis topic #128,finance_analysis,TranslationAgent,1826,1,False
+Q-0129,USR-114,2026-08-11T18:52:00,Sample query about sales report topic #129,sales_report,LegalReview,7544,4,False
+Q-0130,USR-369,2026-08-16T13:07:00,Sample query about compliance check topic #130,compliance_check,MeetingSummarizer,6116,1,True
+Q-0131,USR-754,2026-08-27T10:40:00,Sample query about report generation topic #131,report_generation,TranslationAgent,998,1,False
+Q-0132,USR-892,2026-08-24T11:26:00,Sample query about meeting notes topic #132,meeting_notes,LegalReview,5122,4,False
+Q-0133,USR-114,2026-08-12T11:12:00,Sample query about translation topic #133,translation,SalesInsight,6866,3,False
+Q-0134,USR-816,2026-08-10T12:32:00,Sample query about hr policy topic #134,hr_policy,ReportWriter,5515,4,True
+Q-0135,USR-536,2026-08-14T13:22:00,Sample query about meeting notes topic #135,meeting_notes,MeetingSummarizer,6467,3,False
+Q-0136,USR-482,2026-08-30T10:29:00,Sample query about compliance check topic #136,compliance_check,LegalReview,4728,5,False
+Q-0137,USR-965,2026-08-18T14:24:00,Sample query about data cleaning topic #137,data_cleaning,SecurityScanner,5840,4,False
+Q-0138,USR-189,2026-08-23T17:59:00,Sample query about hr policy topic #138,hr_policy,HRAssist,934,1,True
+Q-0139,USR-657,2026-08-04T15:47:00,Sample query about translation topic #139,translation,HRAssist,5389,4,False
+Q-0140,USR-316,2026-08-22T12:54:00,Sample query about compliance check topic #140,compliance_check,CodeHelper,6564,4,True
+Q-0141,USR-227,2026-08-04T11:54:00,Sample query about report generation topic #141,report_generation,SalesInsight,6702,4,True
+Q-0142,USR-107,2026-08-30T18:45:00,Sample query about compliance check topic #142,compliance_check,SalesInsight,6607,2,False
+Q-0143,USR-958,2026-08-09T18:16:00,Sample query about data cleaning topic #143,data_cleaning,ComplianceChecker,5715,2,False
+Q-0144,USR-126,2026-08-29T14:02:00,Sample query about finance analysis topic #144,finance_analysis,LegalReview,6675,3,False
+Q-0145,USR-347,2026-08-11T10:36:00,Sample query about compliance check topic #145,compliance_check,MeetingSummarizer,3406,2,True
+Q-0146,USR-539,2026-08-27T08:51:00,Sample query about translation topic #146,translation,LegalReview,7895,4,False
+Q-0147,USR-547,2026-08-13T13:33:00,Sample query about legal review topic #147,legal_review,CodeHelper,1015,2,False
+Q-0148,USR-963,2026-08-21T17:50:00,Sample query about compliance check topic #148,compliance_check,SecurityScanner,7709,3,False
+Q-0149,USR-126,2026-08-11T11:05:00,Sample query about hr policy topic #149,hr_policy,ComplianceChecker,294,5,False
+Q-0150,USR-180,2026-08-01T17:45:00,Sample query about meeting notes topic #150,meeting_notes,TranslationAgent,3332,1,False
+Q-0151,USR-291,2026-08-15T18:40:00,Sample query about sales report topic #151,sales_report,CodeHelper,5545,2,False
+Q-0152,USR-843,2026-08-07T16:53:00,Sample query about code help topic #152,code_help,ComplianceChecker,6511,3,False
+Q-0153,USR-742,2026-08-09T09:59:00,Sample query about legal review topic #153,legal_review,FinanceBot,5429,5,False
+Q-0154,USR-225,2026-08-04T15:59:00,Sample query about translation topic #154,translation,HRAssist,1361,3,False
+Q-0155,USR-606,2026-08-29T10:05:00,Sample query about hr policy topic #155,hr_policy,SalesInsight,7676,2,True
+Q-0156,USR-523,2026-08-04T15:50:00,Sample query about finance analysis topic #156,finance_analysis,HRAssist,4185,1,False
+Q-0157,USR-748,2026-08-22T14:24:00,Sample query about sales report topic #157,sales_report,ReportWriter,6823,2,False
+Q-0158,USR-775,2026-08-10T08:57:00,Sample query about legal review topic #158,legal_review,TranslationAgent,5370,5,False
+Q-0159,USR-728,2026-08-04T13:22:00,Sample query about report generation topic #159,report_generation,TranslationAgent,4676,1,False
+Q-0160,USR-297,2026-08-17T12:59:00,Sample query about hr policy topic #160,hr_policy,TranslationAgent,442,5,False
+Q-0161,USR-321,2026-08-17T16:48:00,Sample query about legal review topic #161,legal_review,SalesInsight,1140,2,False
+Q-0162,USR-845,2026-08-11T10:14:00,Sample query about hr policy topic #162,hr_policy,CustomerFeedback,7899,2,False
+Q-0163,USR-456,2026-08-09T15:12:00,Sample query about hr policy topic #163,hr_policy,CustomerFeedback,4717,3,True
+Q-0164,USR-509,2026-08-24T15:27:00,Sample query about meeting notes topic #164,meeting_notes,CodeHelper,2248,2,False
+Q-0165,USR-697,2026-08-22T12:25:00,Sample query about hr policy topic #165,hr_policy,TranslationAgent,2752,2,False
+Q-0166,USR-533,2026-08-24T15:27:00,Sample query about report generation topic #166,report_generation,TranslationAgent,6320,3,False
+Q-0167,USR-539,2026-08-20T09:38:00,Sample query about compliance check topic #167,compliance_check,CodeHelper,4846,3,False
+Q-0168,USR-560,2026-08-29T18:52:00,Sample query about hr policy topic #168,hr_policy,LegalReview,7486,1,False
+Q-0169,USR-946,2026-08-19T14:18:00,Sample query about translation topic #169,translation,SecurityScanner,7985,5,False
+Q-0170,USR-928,2026-08-13T08:07:00,Sample query about legal review topic #170,legal_review,SalesInsight,3717,2,False
+Q-0171,USR-480,2026-08-08T09:13:00,Sample query about sales report topic #171,sales_report,LegalReview,6585,3,False
+Q-0172,USR-834,2026-08-01T13:44:00,Sample query about finance analysis topic #172,finance_analysis,SalesInsight,1951,4,False
+Q-0173,USR-494,2026-08-29T11:35:00,Sample query about hr policy topic #173,hr_policy,DataCleaner,5129,2,False
+Q-0174,USR-926,2026-08-04T16:17:00,Sample query about translation topic #174,translation,SecurityScanner,812,5,True
+Q-0175,USR-302,2026-08-22T14:20:00,Sample query about sales report topic #175,sales_report,CodeHelper,606,4,True
+Q-0176,USR-227,2026-08-02T12:26:00,Sample query about hr policy topic #176,hr_policy,ReportWriter,1601,5,False
+Q-0177,USR-121,2026-08-19T14:15:00,Sample query about translation topic #177,translation,DataCleaner,346,5,False
+Q-0178,USR-961,2026-08-30T15:18:00,Sample query about legal review topic #178,legal_review,ComplianceChecker,503,5,False
+Q-0179,USR-581,2026-08-11T18:01:00,Sample query about hr policy topic #179,hr_policy,HRAssist,6998,4,False
+Q-0180,USR-509,2026-08-09T13:48:00,Sample query about sales report topic #180,sales_report,HRAssist,4758,3,True
+Q-0181,USR-813,2026-08-20T08:25:00,Sample query about data cleaning topic #181,data_cleaning,ReportWriter,4241,1,False
+Q-0182,USR-148,2026-08-20T09:01:00,Sample query about code help topic #182,code_help,FinanceBot,1336,1,False
+Q-0183,USR-190,2026-08-28T14:14:00,Sample query about legal review topic #183,legal_review,CodeHelper,6131,3,False
+Q-0184,USR-213,2026-08-30T08:16:00,Sample query about finance analysis topic #184,finance_analysis,FinanceBot,7959,3,False
+Q-0185,USR-910,2026-08-09T13:44:00,Sample query about translation topic #185,translation,ComplianceChecker,2411,2,False
+Q-0186,USR-426,2026-08-19T15:07:00,Sample query about legal review topic #186,legal_review,LegalReview,6368,5,True
+Q-0187,USR-634,2026-08-21T15:42:00,Sample query about hr policy topic #187,hr_policy,MeetingSummarizer,2170,5,True
+Q-0188,USR-891,2026-08-22T15:17:00,Sample query about sales report topic #188,sales_report,CustomerFeedback,4154,2,False
+Q-0189,USR-461,2026-08-09T12:45:00,Sample query about hr policy topic #189,hr_policy,MeetingSummarizer,7044,2,False
+Q-0190,USR-161,2026-08-23T09:04:00,Sample query about report generation topic #190,report_generation,CodeHelper,307,2,True
+Q-0191,USR-207,2026-08-27T14:12:00,Sample query about report generation topic #191,report_generation,SalesInsight,1909,5,False
+Q-0192,USR-771,2026-08-25T12:45:00,Sample query about report generation topic #192,report_generation,LegalReview,7145,5,False
+Q-0193,USR-494,2026-08-30T10:14:00,Sample query about sales report topic #193,sales_report,ReportWriter,7309,5,False
+Q-0194,USR-384,2026-08-25T14:12:00,Sample query about hr policy topic #194,hr_policy,ComplianceChecker,1545,3,False
+Q-0195,USR-862,2026-08-05T15:56:00,Sample query about hr policy topic #195,hr_policy,HRAssist,2170,1,True
+Q-0196,USR-777,2026-08-06T12:01:00,Sample query about report generation topic #196,report_generation,MeetingSummarizer,3908,3,False
+Q-0197,USR-541,2026-08-04T16:05:00,Sample query about sales report topic #197,sales_report,CodeHelper,1433,4,True
+Q-0198,USR-379,2026-08-17T13:03:00,Sample query about report generation topic #198,report_generation,SalesInsight,1001,1,True
+Q-0199,USR-293,2026-08-24T14:12:00,Sample query about data cleaning topic #199,data_cleaning,ComplianceChecker,1647,5,False
+Q-0200,USR-543,2026-08-17T17:31:00,Sample query about meeting notes topic #200,meeting_notes,HRAssist,5780,1,False
