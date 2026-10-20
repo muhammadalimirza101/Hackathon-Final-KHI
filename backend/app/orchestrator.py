@@ -19,7 +19,7 @@ from .schemas import PlanStep
 # Agents whose tools read the attachment themselves: they only need a preview in the prompt.
 TOOL_READERS = {"DataCleaner", "SalesInsight", "SecurityScanner", "ComplianceChecker"}
 # Agents that produce long outputs get a longer timeout than the default step timeout.
-SLOW_AGENTS = {"ReportWriter": 2.5, "DataCleaner": 1.5, "SalesInsight": 1.5, "SecurityScanner": 1.5, "ComplianceChecker": 1.5}
+SLOW_AGENTS = {"ReportWriter": 2.5, "DataCleaner": 1.5, "SalesInsight": 1.5, "SecurityScanner": 2.0, "ComplianceChecker": 2.0}
 MAX_UPSTREAM_CHARS = 4000
 MAX_ATTACHMENT_CHARS = 12000
 UNSUPPORTED_REPLY = ("Sorry, that request is outside what our specialist agents handle "

@@ -144,7 +144,7 @@ async def get_sample(name: str):
     return PlainTextResponse((config.DATA_DIR / SAMPLES[name]).read_text(encoding="utf-8"))
 
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "HEAD"])  # uptime monitors (UptimeRobot) send HEAD
 async def health():
     """Uptime probe (pinged every 5 min). Must stay instant and free: no OpenAI or Firestore calls."""
     return {"ok": True}
