@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { api, streamChat } from '../api/client'
+import { PipelineGraph } from '../components/PipelineGraph'
 import { TraceTimeline } from '../components/TraceTimeline'
 import { Button, Card, CardHeader, Spinner, ms } from '../lib/ui'
 import type { TraceEvent } from '../types'
@@ -108,6 +109,12 @@ export default function CommandCenter({ onFinished }: { onFinished?: () => void 
 
       {(events.length > 0 || running) && (
         <div className="grid gap-6 lg:grid-cols-[1fr]">
+          {events.some((e) => e.type === 'plan') && (
+            <Card>
+              <CardHeader title="Pipeline" subtitle="Steps, the agent that handled each, skipped (orange), rerouted (amber) and replanned (purple)" />
+              <div className="p-2"><PipelineGraph events={events} running={running} /></div>
+            </Card>
+          )}
           <Card>
             <CardHeader title="Live trace" subtitle="Every planning, routing, fallback and replan decision as it happens"
               right={running ? <span className="flex items-center gap-2 text-xs text-accent"><Spinner className="h-3 w-3" /> streaming</span> : null} />
