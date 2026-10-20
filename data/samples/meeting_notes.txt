@@ -1,0 +1,12 @@
+Budget Review Meeting - 14 October 2026
+Attendees: Ayesha (Finance), Bilal (Ops), Sana (HR), Omar (Sales)
+
+- Ayesha reported Q3 operating expenses at PKR 18.4M against a budget of PKR 16.0M (15% over).
+- Main overruns: cloud hosting PKR 1.2M over, travel PKR 0.7M over, marketing events PKR 0.5M over.
+- Omar said Q3 revenue was PKR 42M, up 8% from Q2, mainly from the Lahore region.
+- Decision: freeze non-essential travel until end of December.
+- Decision: move two internal tools to cheaper hosting by November.
+- Bilal to prepare a hosting cost comparison by 21 October.
+- Sana to circulate the updated travel policy to all staff by 18 October.
+- Ayesha to send a revised Q4 forecast by 25 October.
+- Next meeting: 28 October.

@@ -1,0 +1,33 @@
+query,intent
+What is the leave policy for employees going for Hajj?,hr_policy
+How many days of maternity leave do female employees get?,hr_policy
+What documents does a new hire need to submit during onboarding?,hr_policy
+Is medical insurance extended to an employee's parents?,hr_policy
+Review this vendor contract for risky clauses.,legal_review
+Does this NDA have a reasonable non-compete period?,legal_review
+Explain what an indemnity clause means in our service agreement.,legal_review
+Check whether this customer list contains any CNIC numbers or phone numbers.,compliance_check
+Are we compliant with data retention rules if we keep CVs for five years?,compliance_check
+Does our new marketing email process follow the company privacy policy?,compliance_check
+Compare our Q3 marketing spend against the approved budget.,finance_analysis
+Calculate the current ratio and debt-to-equity from these figures.,finance_analysis
+Forecast next quarter's operating expenses based on the last four quarters.,finance_analysis
+What were our top selling products last month?,sales_report
+Show the sales trend by region for this year.,sales_report
+What is the total revenue from the Lahore branch in September?,sales_report
+Remove duplicate rows and fix the date formats in this spreadsheet.,data_cleaning
+Fill the missing values in this CSV and trim extra spaces.,data_cleaning
+Write an executive summary report of our hiring progress this quarter.,report_generation
+Draft a one page project status report for the leadership team.,report_generation
+Summarize these meeting notes and list the action items.,meeting_notes
+What decisions were made in yesterday's product sync? Here are the notes.,meeting_notes
+Translate this announcement into Urdu.,translation
+Translate the following customer message from Urdu to English.,translation
+Why does my Python function return None instead of the list?,code_help
+Write a JavaScript function that validates an email address.,code_help
+Refactor this SQL query to make it faster.,code_help
+Scan this code for hardcoded API keys or passwords.,security_scan
+Is there any SQL injection risk in this login handler?,security_scan
+What is the overall sentiment in these customer reviews?,customer_feedback
+Group these customer complaints into themes and tell me the most urgent ones.,customer_feedback
+Summarize our NPS survey comments.,customer_feedback

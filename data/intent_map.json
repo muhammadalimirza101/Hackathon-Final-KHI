@@ -1,0 +1,50 @@
+{
+  "hr_policy": {
+    "description": "HR policies, leave, benefits, payroll basics, onboarding",
+    "agents": {"HRAssist": 1.0, "LegalReview": 0.6, "ComplianceChecker": 0.5}
+  },
+  "legal_review": {
+    "description": "Contract / NDA review, risky clauses, legal terms, liability",
+    "agents": {"LegalReview": 1.0, "ComplianceChecker": 0.7}
+  },
+  "compliance_check": {
+    "description": "Policy or regulatory compliance, PII / personal data detection",
+    "agents": {"ComplianceChecker": 1.0, "LegalReview": 0.7, "SecurityScanner": 0.4}
+  },
+  "finance_analysis": {
+    "description": "Budgets, expenses, financial ratios, forecasts",
+    "agents": {"FinanceBot": 1.0, "SalesInsight": 0.6}
+  },
+  "sales_report": {
+    "description": "Sales totals, top products, sales trends",
+    "agents": {"SalesInsight": 1.0, "ReportWriter": 0.6, "FinanceBot": 0.5}
+  },
+  "data_cleaning": {
+    "description": "Clean tabular / CSV data: duplicates, missing values, dates",
+    "agents": {"DataCleaner": 1.0, "SalesInsight": 0.3}
+  },
+  "report_generation": {
+    "description": "Write structured reports, executive summaries, documents",
+    "agents": {"ReportWriter": 1.0, "MeetingSummarizer": 0.5}
+  },
+  "meeting_notes": {
+    "description": "Summarize meetings, action items, decisions",
+    "agents": {"MeetingSummarizer": 1.0, "ReportWriter": 0.5}
+  },
+  "translation": {
+    "description": "Translate text between languages (e.g. English and Urdu)",
+    "agents": {"TranslationAgent": 1.0, "ReportWriter": 0.4}
+  },
+  "code_help": {
+    "description": "Write, explain, debug or refactor code",
+    "agents": {"CodeHelper": 1.0, "SecurityScanner": 0.5}
+  },
+  "security_scan": {
+    "description": "Scan code for secrets, unsafe patterns, risky dependencies",
+    "agents": {"SecurityScanner": 1.0, "CodeHelper": 0.6}
+  },
+  "customer_feedback": {
+    "description": "Customer feedback sentiment, themes, complaints, NPS",
+    "agents": {"CustomerFeedback": 1.0, "SalesInsight": 0.5}
+  }
+}

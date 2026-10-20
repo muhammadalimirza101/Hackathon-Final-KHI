@@ -1,0 +1,11 @@
+query,expected_intents,attachment
+"Clean this sales data, find the top products and write a report",data_cleaning>sales_report>report_generation,demo_sales.csv
+"Summarize these meeting notes and translate the action items into Urdu",meeting_notes>translation,samples/meeting_notes.txt
+"Review this vendor contract for risky clauses and write a short report for management",legal_review>report_generation,samples/vendor_contract.txt
+"Scan this code for hardcoded secrets and then explain how to fix them",security_scan>code_help,samples/app_code.py
+"Analyze our sales trend and then forecast next quarter's revenue",sales_report>finance_analysis,demo_sales.csv
+"Check this customer list for personal data and write a compliance report",compliance_check>report_generation,samples/customer_list.csv
+"Analyze the sentiment of these customer reviews and write an executive summary",customer_feedback>report_generation,samples/customer_reviews.txt
+"Clean this dataset and then summarize total sales by region",data_cleaning>sales_report,demo_sales.csv
+"Explain our Hajj leave policy and translate the answer into Urdu",hr_policy>translation,
+"Summarize the budget meeting notes and analyze the expense figures mentioned",meeting_notes>finance_analysis,samples/meeting_notes.txt

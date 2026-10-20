@@ -1,0 +1,181 @@
+[
+  {
+    "agent_id": "AGT-001",
+    "name": "FinanceBot",
+    "description": "Financial analysis agent: reviews budgets and expenses, computes budget variance and financial ratios, and produces simple forecasts.",
+    "capabilities": [
+      "analyze_expenses",
+      "budget_variance",
+      "financial_ratios",
+      "forecast"
+    ],
+    "avg_response_time_ms": 3178,
+    "success_rate": 0.985,
+    "usage_count_30d": 1415,
+    "status": "degraded"
+  },
+  {
+    "agent_id": "AGT-002",
+    "name": "HRAssist",
+    "description": "HR assistant: answers questions on HR policies, leave (annual, sick, Hajj, maternity), benefits, payroll basics and employee onboarding.",
+    "capabilities": [
+      "leave_policy",
+      "benefits_info",
+      "onboarding",
+      "hr_faq"
+    ],
+    "avg_response_time_ms": 2234,
+    "success_rate": 0.892,
+    "usage_count_30d": 4265,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-003",
+    "name": "LegalReview",
+    "description": "Legal review agent: reviews contracts and NDAs, flags risky clauses, explains legal terms and analyzes liability and indemnity.",
+    "capabilities": [
+      "contract_review",
+      "clause_risk",
+      "nda_check",
+      "legal_terms",
+      "liability_analysis"
+    ],
+    "avg_response_time_ms": 1345,
+    "success_rate": 0.931,
+    "usage_count_30d": 2573,
+    "status": "maintenance"
+  },
+  {
+    "agent_id": "AGT-004",
+    "name": "CodeHelper",
+    "description": "Coding assistant: writes, explains, debugs and refactors code in common programming languages.",
+    "capabilities": [
+      "explain_code",
+      "debug",
+      "refactor",
+      "write_function"
+    ],
+    "avg_response_time_ms": 4609,
+    "success_rate": 0.921,
+    "usage_count_30d": 821,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-005",
+    "name": "DataCleaner",
+    "description": "Data cleaning agent: cleans tabular CSV data by removing duplicate rows, trimming whitespace, filling missing values and normalizing dates.",
+    "capabilities": [
+      "deduplicate_rows",
+      "fill_missing_values",
+      "normalize_dates"
+    ],
+    "avg_response_time_ms": 500,
+    "success_rate": 0.876,
+    "usage_count_30d": 2465,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-006",
+    "name": "SalesInsight",
+    "description": "Sales analytics agent: analyzes sales data to compute totals, top products and regions, and sales trends over time.",
+    "capabilities": [
+      "sales_totals",
+      "top_products",
+      "trend_analysis"
+    ],
+    "avg_response_time_ms": 4722,
+    "success_rate": 0.88,
+    "usage_count_30d": 2951,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-007",
+    "name": "ComplianceChecker",
+    "description": "Compliance agent: checks text and processes against company policy and regulations, and detects personal data (PII) such as emails, phone numbers and CNIC numbers.",
+    "capabilities": [
+      "pii_detection",
+      "policy_compliance",
+      "regulatory_check"
+    ],
+    "avg_response_time_ms": 3657,
+    "success_rate": 0.86,
+    "usage_count_30d": 2098,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-008",
+    "name": "ReportWriter",
+    "description": "Report writing agent: compiles findings into structured reports and executive summaries, formats documents and saves them for download.",
+    "capabilities": [
+      "write_report",
+      "executive_summary",
+      "format_document",
+      "save_report",
+      "compile_findings"
+    ],
+    "avg_response_time_ms": 1537,
+    "success_rate": 0.906,
+    "usage_count_30d": 692,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-009",
+    "name": "MeetingSummarizer",
+    "description": "Meeting agent: summarizes meeting notes and transcripts, extracts action items, decisions, attendee notes and follow-ups.",
+    "capabilities": [
+      "summarize_meeting",
+      "action_items",
+      "decisions",
+      "attendee_notes",
+      "follow_ups"
+    ],
+    "avg_response_time_ms": 1373,
+    "success_rate": 0.925,
+    "usage_count_30d": 588,
+    "status": "active"
+  },
+  {
+    "agent_id": "AGT-010",
+    "name": "TranslationAgent",
+    "description": "Translation agent: translates text between languages including English and Urdu, detects language and localizes content.",
+    "capabilities": [
+      "translate",
+      "detect_language",
+      "localize"
+    ],
+    "avg_response_time_ms": 3248,
+    "success_rate": 0.929,
+    "usage_count_30d": 4199,
+    "status": "maintenance"
+  },
+  {
+    "agent_id": "AGT-011",
+    "name": "SecurityScanner",
+    "description": "Security agent: scans source code for exposed secrets and API keys, unsafe code patterns (eval, SQL injection) and risky dependencies.",
+    "capabilities": [
+      "secret_detection",
+      "unsafe_code_patterns",
+      "dependency_risk"
+    ],
+    "avg_response_time_ms": 3638,
+    "success_rate": 0.965,
+    "usage_count_30d": 2601,
+    "status": "degraded"
+  },
+  {
+    "agent_id": "AGT-012",
+    "name": "CustomerFeedback",
+    "description": "Customer feedback agent: analyzes customer reviews and feedback for sentiment, recurring themes, complaint triage and NPS summaries.",
+    "capabilities": [
+      "sentiment",
+      "theme_extraction",
+      "complaint_triage",
+      "nps_summary",
+      "feedback_summary"
+    ],
+    "avg_response_time_ms": 412,
+    "success_rate": 0.985,
+    "usage_count_30d": 2037,
+    "status": "active"
+  }
+]
