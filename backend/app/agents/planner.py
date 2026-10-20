@@ -23,7 +23,7 @@ Each step has exactly one intent from this list:
 
 Rules:
 - Most requests are ONE step. Only split when the user clearly asks for several different things.
-- "task" is a short, self-contained instruction for the specialist agent (include relevant details from the request).
+- "task" is ONE short self-contained sentence for the specialist agent (keep key details from the request, add nothing else).
 - depends_on lists ids of earlier steps whose output the step needs (e.g. a report about analysis results).
 - Ids are s1, s2, s3 ... in execution order.
 - Return ONLY JSON: {{"steps": [{{"id": "s1", "intent": "...", "task": "...", "depends_on": []}}]}}

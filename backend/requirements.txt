@@ -1,5 +1,6 @@
 google-adk
 litellm
+mcp
 fastapi
 uvicorn[standard]
 google-cloud-firestore
