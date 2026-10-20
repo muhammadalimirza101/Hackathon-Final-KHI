@@ -1,7 +1,10 @@
 import { Background, Handle, Position, ReactFlow, type Edge, type Node, type NodeProps } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import { BrainCircuit, CircleCheck, CircleDashed, CircleX, Loader2 } from 'lucide-react'
 import { useMemo } from 'react'
 import type { TraceEvent } from '../types'
+import { AgentIcon } from '../lib/agents'
+import type { Theme } from '../lib/theme'
 import { INTENT_LABEL, cn, ms } from '../lib/ui'
 
 type StepStatus = 'pending' | 'running' | 'ok' | 'failed'
@@ -17,7 +20,7 @@ interface StepInfo {
 }
 
 type StepData = { info: StepInfo }
-type EndData = { label: string; sub?: string; tone: 'accent' | 'ok' | 'warn' | 'muted' }
+type EndData = { label: string; sub?: string; kind: 'planner' | 'result'; state: 'idle' | 'active' | 'ok' | 'warn' }
 
 /** Collapse the event stream into one status record per plan step (replacement steps "s1.r1" fold into "s1"). */
 function deriveSteps(events: TraceEvent[]) {
@@ -38,7 +41,7 @@ function deriveSteps(events: TraceEvent[]) {
     switch (ev.type) {
       case 'routing':
         st.status = 'running'
-        st.skipped.push(...ev.excluded.map((e) => ({ agent: e.agent, reason: e.reason })))
+        for (const e of ev.excluded) if (!st.skipped.some((x) => x.agent === e.agent)) st.skipped.push({ agent: e.agent, reason: e.reason })
         break
       case 'attempt':
         st.tried.push({ agent: ev.agent, ok: null })
@@ -64,61 +67,72 @@ function deriveSteps(events: TraceEvent[]) {
   return { steps: [...steps.values()], deps }
 }
 
-const STATUS_RING: Record<StepStatus, string> = {
+const RING: Record<StepStatus, string> = {
   pending: 'border-line',
-  running: 'border-accent shadow-[0_0_0_3px_rgba(34,211,238,0.15)]',
-  ok: 'border-ok/60',
-  failed: 'border-bad/60',
+  running: 'border-accent ring-4 ring-accent/10',
+  ok: 'border-ok/50',
+  failed: 'border-bad/50',
+}
+
+function StatusIcon({ s }: { s: StepStatus }) {
+  if (s === 'running') return <Loader2 size={13} className="animate-spin text-accent" />
+  if (s === 'ok') return <CircleCheck size={13} className="text-ok" />
+  if (s === 'failed') return <CircleX size={13} className="text-bad" />
+  return <CircleDashed size={13} className="text-faint" />
 }
 
 function StepNode({ data }: NodeProps<Node<StepData>>) {
   const s = data.info
+  const final = s.tried.find((t) => t.ok === true)?.agent ?? s.tried[s.tried.length - 1]?.agent
   return (
-    <div className={cn('w-52 rounded-lg border bg-panel px-3 py-2 text-left', STATUS_RING[s.status])}>
-      <Handle type="target" position={Position.Left} className="!border-none !bg-line" />
-      <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-muted">
-        <span>{s.id}</span>
-        <span>{s.status === 'running' ? 'running…' : s.latency != null ? ms(s.latency) : s.status}</span>
+    <div className={cn('w-[228px] rounded-xl border bg-surface shadow-card transition-all duration-300', RING[s.status])}>
+      <Handle type="target" position={Position.Left} />
+      <div className="flex items-center justify-between border-b border-line px-3 py-1.5">
+        <span className="font-mono text-[10.5px] text-muted">{s.id}</span>
+        <span className="flex items-center gap-1 text-[10.5px] text-muted"><StatusIcon s={s.status} />{s.latency != null ? ms(s.latency) : s.status === 'running' ? 'running' : 'queued'}</span>
       </div>
-      <div className="text-xs font-semibold text-white">{INTENT_LABEL[s.intent] ?? s.intent}</div>
-      <div className="mt-1 space-y-0.5 text-[11px]">
-        {s.skipped.map((x) => (
-          <div key={`sk-${x.agent}`} className="text-orange-300 line-through decoration-orange-300/60">{x.agent} <span className="no-underline">({x.reason})</span></div>
-        ))}
-        {s.tried.map((x, i) => (
-          <div key={i} className={cn(x.ok === true ? 'text-ok' : x.ok === false ? 'text-warn' : 'text-accent')}>
-            {x.ok === true ? '✓' : x.ok === false ? '↷' : '…'} {x.agent}
+      <div className="px-3 py-2">
+        <div className="text-[12.5px] font-semibold text-ink">{INTENT_LABEL[s.intent] ?? s.intent}</div>
+        <div className="mt-1.5 flex items-center gap-2">
+          {final ? <AgentIcon name={final} size="sm" /> : <span className="h-6 w-6 rounded-md bg-surface-3" />}
+          <span className="truncate text-xs text-ink-2">{final ?? 'awaiting routing'}</span>
+        </div>
+        {(s.skipped.length > 0 || s.tried.some((t) => t.ok === false) || s.replanned) && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {s.skipped.map((x) => <span key={x.agent} className="rounded bg-serious-soft px-1.5 py-0.5 text-[10px] text-serious line-through">{x.agent}</span>)}
+            {s.tried.filter((t) => t.ok === false).map((x, i) => <span key={i} className="rounded bg-warn-soft px-1.5 py-0.5 text-[10px] text-warn">↷ {x.agent}</span>)}
+            {s.replanned && <span className="rounded bg-replan-soft px-1.5 py-0.5 text-[10px] text-replan">replanned</span>}
           </div>
-        ))}
-        {s.replanned && <div className="text-replan">⟲ replanned</div>}
+        )}
       </div>
-      <Handle type="source" position={Position.Right} className="!border-none !bg-line" />
+      <Handle type="source" position={Position.Right} />
     </div>
   )
 }
 
-const END_TONE = { accent: 'border-accent/60 text-accent', ok: 'border-ok/60 text-ok', warn: 'border-warn/60 text-warn', muted: 'border-line text-muted' }
-
 function EndNode({ data }: NodeProps<Node<EndData>>) {
+  const tone = data.state === 'ok' ? 'border-ok/50 text-ok' : data.state === 'warn' ? 'border-warn/50 text-warn' : data.state === 'active' ? 'border-accent/60 text-accent' : 'border-line text-muted'
   return (
-    <div className={cn('rounded-full border bg-panel px-4 py-2 text-center text-xs font-semibold', END_TONE[data.tone])}>
-      <Handle type="target" position={Position.Left} className="!border-none !bg-line" />
-      {data.label}
-      {data.sub && <div className="text-[10px] font-normal text-muted">{data.sub}</div>}
-      <Handle type="source" position={Position.Right} className="!border-none !bg-line" />
+    <div className={cn('flex items-center gap-2 rounded-xl border bg-surface px-3.5 py-2.5 shadow-card', tone)}>
+      <Handle type="target" position={Position.Left} />
+      {data.kind === 'planner' ? <BrainCircuit size={16} /> : data.state === 'ok' ? <CircleCheck size={16} /> : <CircleDashed size={16} />}
+      <div>
+        <div className="text-xs font-semibold text-ink">{data.label}</div>
+        {data.sub && <div className="text-[10.5px] text-muted">{data.sub}</div>}
+      </div>
+      <Handle type="source" position={Position.Right} />
     </div>
   )
 }
 
 const nodeTypes = { step: StepNode, end: EndNode }
 
-export function PipelineGraph({ events, running }: { events: TraceEvent[]; running: boolean }) {
+export function PipelineGraph({ events, running, theme }: { events: TraceEvent[]; running: boolean; theme: Theme }) {
   const { nodes, edges, height } = useMemo(() => {
     const { steps, deps } = deriveSteps(events)
     const done = events.find((e) => e.type === 'done') as Extract<TraceEvent, { type: 'done' }> | undefined
     const plan = events.find((e) => e.type === 'plan') as Extract<TraceEvent, { type: 'plan' }> | undefined
 
-    // Column = dependency depth; row = order within that column.
     const depth = new Map<string, number>()
     const getDepth = (id: string, seen = new Set<string>()): number => {
       if (depth.has(id)) return depth.get(id)!
@@ -129,44 +143,63 @@ export function PipelineGraph({ events, running }: { events: TraceEvent[]; runni
       return d
     }
     steps.forEach((s) => getDepth(s.id))
-    const rows = new Map<number, number>()
-    const COL = 260, ROW = 130
+    const perCol = new Map<number, number>()
+    steps.forEach((s) => perCol.set(depth.get(s.id)!, (perCol.get(depth.get(s.id)!) ?? 0) + 1))
+    const maxRows = Math.max(1, ...perCol.values())
+    const COL = 262, ROW = 140
     const maxDepth = Math.max(0, ...depth.values())
-    const nodes: Node[] = [
-      { id: 'planner', type: 'end', position: { x: 0, y: 0 }, data: { label: 'Planner', sub: plan?.planner_ms != null ? ms(plan.planner_ms) : 'thinking…', tone: plan ? 'accent' : 'muted' } },
-    ]
+    const rows = new Map<number, number>()
+    const centerY = ((maxRows - 1) * ROW) / 2
+
+    const nodes: Node[] = [{
+      id: 'planner', type: 'end', position: { x: 0, y: centerY + 30 },
+      data: { kind: 'planner', label: 'Planner', sub: plan?.planner_ms != null ? `${ms(plan.planner_ms)} · ${steps.length} step${steps.length === 1 ? '' : 's'}` : 'analyzing…', state: plan ? 'ok' : 'active' },
+    }]
     for (const s of steps) {
       const d = depth.get(s.id) ?? 0
       const r = rows.get(d) ?? 0
       rows.set(d, r + 1)
-      nodes.push({ id: s.id, type: 'step', position: { x: 160 + d * COL, y: r * ROW - 30 }, data: { info: s } })
+      const colRows = perCol.get(d) ?? 1
+      const offset = ((maxRows - colRows) * ROW) / 2
+      nodes.push({ id: s.id, type: 'step', position: { x: 170 + d * COL, y: offset + r * ROW }, data: { info: s } })
     }
-    const endTone = !done ? 'muted' : done.success ? 'ok' : 'warn'
     nodes.push({
-      id: 'result', type: 'end', position: { x: 160 + (maxDepth + 1) * COL, y: 0 },
-      data: { label: done ? (done.success ? 'Answer' : 'Partial answer') : 'Answer', sub: done ? ms(done.total_latency_ms) : undefined, tone: endTone },
+      id: 'result', type: 'end', position: { x: 170 + (maxDepth + 1) * COL, y: centerY + 30 },
+      data: { kind: 'result', label: done ? (done.success ? 'Answer delivered' : 'Partial answer') : 'Answer', sub: done ? ms(done.total_latency_ms) : 'pending', state: !done ? 'idle' : done.success ? 'ok' : 'warn' },
     })
 
-    const anim = (id: string) => running && steps.find((s) => s.id === id)?.status !== 'ok'
-    const edgeStyle = { stroke: '#3b4a66', strokeWidth: 2 }
+    const stroke = theme === 'dark' ? '#2e3749' : '#d0d5dd'
+    const live = theme === 'dark' ? '#5b84f6' : '#2554d9'
+    const okC = theme === 'dark' ? '#34c08b' : '#0f9f6e'
+    const st = (id: string) => steps.find((s) => s.id === id)?.status
+    const edgeFor = (id: string, source: string, target: string): Edge => {
+      const s = st(target) ?? st(source)
+      const active = running && s === 'running'
+      const doneEdge = st(source) === 'ok' || source === 'planner' && !!plan
+      return { id, source, target, animated: active, style: { stroke: active ? live : doneEdge && st(target) === 'ok' ? okC : stroke, strokeWidth: 2 } }
+    }
     const edges: Edge[] = []
     const dependedOn = new Set([...deps.values()].flat())
     for (const s of steps) {
       const ds = deps.get(s.id) ?? []
-      if (ds.length === 0) edges.push({ id: `planner-${s.id}`, source: 'planner', target: s.id, animated: anim(s.id), style: edgeStyle })
-      for (const p of ds) edges.push({ id: `${p}-${s.id}`, source: p, target: s.id, animated: anim(s.id), style: edgeStyle, label: 'output', labelStyle: { fill: '#8b98ad', fontSize: 10 }, labelBgStyle: { fill: '#0b0f17' } })
-      if (!dependedOn.has(s.id)) edges.push({ id: `${s.id}-result`, source: s.id, target: 'result', animated: running, style: edgeStyle })
+      if (ds.length === 0) edges.push(edgeFor(`planner-${s.id}`, 'planner', s.id))
+      for (const p of ds) edges.push(edgeFor(`${p}-${s.id}`, p, s.id))
+      if (!dependedOn.has(s.id)) {
+        const e = edgeFor(`${s.id}-result`, s.id, 'result')
+        if (done) e.style = { ...e.style, stroke: done.success ? okC : stroke }
+        edges.push(e)
+      }
     }
-    const height = Math.max(220, Math.max(1, ...rows.values()) * ROW + 60)
-    return { nodes, edges, height }
-  }, [events, running])
+    return { nodes, edges, height: Math.max(200, maxRows * ROW + 30) }
+  }, [events, running, theme])
 
   if (!events.some((e) => e.type === 'plan')) return null
   return (
-    <div style={{ height }} className="rounded-lg">
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView fitViewOptions={{ padding: 0.15 }} proOptions={{ hideAttribution: true }}
-        nodesDraggable={false} nodesConnectable={false} elementsSelectable={false} zoomOnScroll={false} panOnDrag={false} preventScrolling={false} colorMode="dark">
-        <Background color="#1f2a3d" gap={20} />
+    <div style={{ height }}>
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView fitViewOptions={{ padding: 0.12, maxZoom: 1 }} proOptions={{ hideAttribution: true }}
+        nodesDraggable={false} nodesConnectable={false} elementsSelectable={false} zoomOnScroll={false} zoomOnPinch={false} panOnDrag={false} preventScrolling={false}
+        colorMode={theme}>
+        <Background color={theme === 'dark' ? '#1a2030' : '#e6e9ef'} gap={18} size={1} />
       </ReactFlow>
     </div>
   )

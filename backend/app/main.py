@@ -125,6 +125,24 @@ async def get_artifact(artifact_id: str, download: bool = False):
     return art
 
 
+# Sample attachments for the playbooks (read-only whitelist of files in data/).
+SAMPLES = {
+    "demo_sales.csv": "demo_sales.csv",
+    "vendor_contract.txt": "samples/vendor_contract.txt",
+    "meeting_notes.txt": "samples/meeting_notes.txt",
+    "app_code.py": "samples/app_code.py",
+    "customer_list.csv": "samples/customer_list.csv",
+    "customer_reviews.txt": "samples/customer_reviews.txt",
+}
+
+
+@app.get("/api/samples/{name}")
+async def get_sample(name: str):
+    if name not in SAMPLES:
+        raise HTTPException(404, "unknown sample")
+    return PlainTextResponse((config.DATA_DIR / SAMPLES[name]).read_text(encoding="utf-8"))
+
+
 @app.get("/api/health")
 async def health():
     return {"ok": True, "storage": db.backend_name(), "model": config.MODEL_NAME, "llm_key_set": bool(config.OPENAI_API_KEY)}

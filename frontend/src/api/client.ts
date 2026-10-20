@@ -18,6 +18,12 @@ export const api = {
   latestEval: () => json<Partial<Record<EvalDataset, EvalResult>>>('/api/eval/latest'),
   artifact: (id: string) => json<Artifact>(`/api/artifacts/${id}`),
   artifactDownloadUrl: (id: string) => `/api/artifacts/${id}?download=true`,
+  sample: async (name: string) => {
+    const res = await fetch(`/api/samples/${encodeURIComponent(name)}`)
+    if (!res.ok) throw new Error(`Could not load sample ${name}`)
+    return res.text()
+  },
+  health: () => json<{ ok: boolean; storage: string; model: string; llm_key_set: boolean }>('/api/health'),
 }
 
 /**

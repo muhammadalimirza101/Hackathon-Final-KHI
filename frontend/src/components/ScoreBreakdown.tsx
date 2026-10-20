@@ -1,48 +1,54 @@
+import { motion } from 'motion/react'
 import type { ExcludedAgent, RankedAgent } from '../types'
-import { cn } from '../lib/ui'
+import { AgentIcon } from '../lib/agents'
+import { STATUS_META, cn } from '../lib/ui'
 
 const PARTS = [
-  { key: 'match', label: 'match', weight: 0.5, color: 'bg-accent' },
-  { key: 'success', label: 'success', weight: 0.2, color: 'bg-ok' },
-  { key: 'health', label: 'health', weight: 0.15, color: 'bg-sky-400' },
-  { key: 'speed', label: 'speed', weight: 0.15, color: 'bg-indigo-400' },
+  { key: 'match', label: 'Capability match', weight: 0.5, color: 'bg-accent' },
+  { key: 'success', label: 'Success rate', weight: 0.2, color: 'bg-ok' },
+  { key: 'health', label: 'Health', weight: 0.15, color: 'bg-sky-400' },
+  { key: 'speed', label: 'Speed', weight: 0.15, color: 'bg-indigo-300 dark:bg-indigo-400' },
 ] as const
 
-/** Ranked candidates for one step: a stacked bar shows how each factor contributes to the score. */
+/** Ranked candidates for one step: each stacked bar shows how the four factors add up to the score. */
 export function ScoreBreakdown({ ranked, excluded, chosen }: { ranked: RankedAgent[]; excluded: ExcludedAgent[]; chosen: string | null }) {
   return (
-    <div className="space-y-2">
-      {ranked.map((r) => (
-        <div key={r.agent} className="grid grid-cols-[130px_1fr_44px] items-center gap-3 text-xs">
-          <span className={cn('truncate', r.agent === chosen ? 'font-semibold text-white' : 'text-muted')}>
-            {r.agent === chosen && '▸ '}
-            {r.agent}
-          </span>
-          <div className="group relative flex h-2.5 overflow-hidden rounded-full bg-panel-2">
-            {PARTS.map((p) => (
-              <div
-                key={p.key}
-                className={cn(p.color, r.agent !== chosen && 'opacity-50')}
-                style={{ width: `${r.breakdown[p.key] * p.weight * 100}%` }}
-                title={`${p.label}: ${r.breakdown[p.key]} × ${p.weight}`}
-              />
-            ))}
+    <div>
+      <div className="space-y-2">
+        {ranked.map((r, i) => (
+          <div key={r.agent} className="grid grid-cols-[160px_1fr_48px] items-center gap-3">
+            <span className={cn('flex min-w-0 items-center gap-2 text-xs', r.agent === chosen ? 'font-semibold text-ink' : 'text-muted')}>
+              <AgentIcon name={r.agent} size="sm" className={r.agent === chosen ? '' : 'opacity-60'} />
+              <span className="truncate">{r.agent}</span>
+            </span>
+            <div className="flex h-2 overflow-hidden rounded-full bg-surface-3" title={PARTS.map((p) => `${p.label}: ${r.breakdown[p.key]} × ${p.weight}`).join('\n')}>
+              {PARTS.map((p, j) => (
+                <motion.div key={p.key} className={cn(p.color, 'border-r-2 border-surface last:border-r-0', r.agent !== chosen && 'opacity-45')}
+                  initial={{ width: 0 }} animate={{ width: `${r.breakdown[p.key] * p.weight * 100}%` }}
+                  transition={{ duration: 0.6, delay: 0.08 * i + 0.05 * j, ease: [0.16, 1, 0.3, 1] }} />
+              ))}
+            </div>
+            <span className={cn('text-right font-mono text-xs tabular', r.agent === chosen ? 'font-medium text-ink' : 'text-muted')}>{r.score.toFixed(3)}</span>
           </div>
-          <span className="text-right font-mono tabular-nums text-slate-300">{r.score.toFixed(2)}</span>
-        </div>
-      ))}
-      {excluded.map((e) => (
-        <div key={e.agent} className="grid grid-cols-[130px_1fr_44px] items-center gap-3 text-xs">
-          <span className="truncate text-muted line-through">{e.agent}</span>
-          <span className="text-orange-300">excluded: {e.reason}</span>
-          <span />
-        </div>
-      ))}
-      <div className="flex flex-wrap gap-3 pt-1 text-[11px] text-muted">
+        ))}
+        {excluded.map((e) => (
+          <div key={e.agent} className="grid grid-cols-[160px_1fr_48px] items-center gap-3">
+            <span className="flex min-w-0 items-center gap-2 text-xs text-faint">
+              <AgentIcon name={e.agent} size="sm" className="opacity-40 grayscale" />
+              <span className="truncate line-through">{e.agent}</span>
+            </span>
+            <span className={cn('w-fit rounded px-1.5 py-0.5 text-[10.5px] font-medium', STATUS_META[e.reason as keyof typeof STATUS_META]?.cls ?? 'bg-surface-3 text-muted')}>
+              Excluded · {STATUS_META[e.reason as keyof typeof STATUS_META]?.label ?? e.reason}
+            </span>
+            <span />
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-line pt-2.5 text-[10.5px] text-muted">
         {PARTS.map((p) => (
-          <span key={p.key} className="inline-flex items-center gap-1">
+          <span key={p.key} className="inline-flex items-center gap-1.5">
             <span className={cn('h-2 w-2 rounded-sm', p.color)} />
-            {p.label} ×{p.weight}
+            {p.label} <span className="font-mono text-faint">×{p.weight}</span>
           </span>
         ))}
       </div>

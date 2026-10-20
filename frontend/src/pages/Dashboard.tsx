@@ -1,139 +1,213 @@
-import { Activity, AlertTriangle, Gauge, GitBranch, Layers, Target, Timer, Zap } from 'lucide-react'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Activity, ArrowRight, CircleCheck, GitBranch, Inbox, Layers, Target, Timer, TriangleAlert, Zap } from 'lucide-react'
+import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { KpiTile } from '../components/KpiTile'
-import { Card, CardHeader, INTENT_LABEL, Pill, cn, ms, pct, usePoll } from '../lib/ui'
+import { AgentIcon } from '../lib/agents'
+import { chartColors, type Theme } from '../lib/theme'
+import { Badge, Card, CardHeader, CountUp, EmptyState, INTENT_LABEL, PageHeader, StatusBadge, cn, ms, pct, stagger, timeAgo, usePoll } from '../lib/ui'
 
-const AXIS = { fontSize: 11, fill: '#8b98ad' }
-const tooltipStyle = { background: '#111827', border: '1px solid #243047', borderRadius: 8, fontSize: 12, color: '#e5e7eb' }
-
-function BarPanel({ title, subtitle, data, dataKey, format, color = '#22d3ee', height = 260 }: {
-  title: string; subtitle?: string; data: Record<string, unknown>[]; dataKey: string
-  format: (v: number) => string; color?: string; height?: number
-}) {
+function ChartTooltip({ active, payload, label, format }: { active?: boolean; payload?: { value: number; payload: Record<string, unknown> }[]; label?: string; format: (v: number) => string }) {
+  if (!active || !payload?.length) return null
+  const q = payload[0].payload.query as string | undefined
   return (
-    <Card>
-      <CardHeader title={title} subtitle={subtitle} />
-      <div className="p-3" style={{ height }}>
-        {data.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-sm text-muted">No data yet. Run some queries.</div>
-        ) : (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} layout="vertical" margin={{ left: 8, right: 24, top: 4, bottom: 4 }} barCategoryGap={4}>
-              <CartesianGrid horizontal={false} stroke="#1f2a3d" />
-              <XAxis type="number" tick={AXIS} tickFormatter={format} axisLine={false} tickLine={false} />
-              <YAxis type="category" dataKey="name" tick={AXIS} width={120} axisLine={false} tickLine={false} />
-              <Tooltip cursor={{ fill: '#ffffff08' }} contentStyle={tooltipStyle} formatter={(v) => [format(Number(v)), title]} />
-              <Bar dataKey={dataKey} fill={color} radius={[0, 4, 4, 0]} maxBarSize={14} />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </div>
-    </Card>
+    <div className="max-w-xs rounded-lg border border-line bg-surface px-3 py-2 text-xs shadow-pop">
+      <div className="font-medium text-ink">{format(payload[0].value)}</div>
+      <div className="text-muted">{q ?? label}</div>
+    </div>
   )
 }
 
-export default function Dashboard() {
-  const { data: m, error } = usePoll(api.metrics, 8000)
-  const { data: logs } = usePoll(() => api.logs(25), 8000)
+export default function Dashboard({ theme }: { theme: Theme }) {
+  const { data: m, error, updatedAt } = usePoll(api.metrics, 8000)
+  const { data: logs } = usePoll(() => api.logs(60), 8000)
+  const [, tick] = useState(0)
+  useEffect(() => { const id = setInterval(() => tick((t) => t + 1), 1000); return () => clearInterval(id) }, [])
+  const c = chartColors(theme)
 
-  const called = (m?.per_agent ?? []).filter((a) => a.calls > 0)
-  const latency = called.map((a) => ({ name: a.agent, value: a.avg_latency_ms ?? 0 })).sort((a, b) => b.value - a.value)
-  const success = called.map((a) => ({ name: a.agent, value: a.success_rate ?? 0 })).sort((a, b) => b.value - a.value)
+  const accuracy = m?.routing_accuracy
+  const trend = [...(logs ?? [])].filter((l) => !l.unsupported).reverse()
+    .map((l, i) => ({ i: i + 1, latency: l.total_latency_ms, overhead: l.router_overhead_ms, query: l.query }))
   const intents = Object.entries(m?.intent_distribution ?? {}).map(([k, v]) => ({ name: INTENT_LABEL[k] ?? k, value: v }))
-  const now = m?.routing_accuracy
+  const agentRows = [...(m?.per_agent ?? [])].sort((a, b) => b.calls - a.calls)
+  const maxCalls = Math.max(1, ...agentRows.map((a) => a.calls))
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
-      <header className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <h1 className="text-2xl font-semibold text-white">Observability Dashboard</h1>
-          <p className="mt-1 text-sm text-muted">Live metrics from every request · refreshes every 8 s · storage: {m?.storage ?? '—'}</p>
-        </div>
-      </header>
-      {error && <Card className="border-bad/40 bg-bad/10 p-4 text-sm text-bad">{error}</Card>}
+    <div className="space-y-6">
+      <PageHeader eyebrow="Insights" title="Observability"
+        description="Live routing quality, latency and resilience across every request handled by the platform."
+        actions={<span className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-muted shadow-card-sm">
+          <span className="live-dot h-1.5 w-1.5 rounded-full bg-ok text-ok" />
+          Live · updated {updatedAt ? `${Math.max(0, Math.round((Date.now() - updatedAt) / 1000))}s ago` : '…'} · {m?.storage === 'firestore' ? 'Firestore' : 'in-memory'}
+        </span>} />
+      {error && <Card className="border-bad/30 bg-bad-soft px-4 py-3 text-sm text-bad">{error}</Card>}
 
-      <Card className="flex flex-wrap items-center gap-6 border-accent/30 bg-gradient-to-r from-accent/10 to-transparent p-5">
-        <div>
-          <div className="text-xs font-medium uppercase tracking-wide text-muted">Routing accuracy</div>
-          <div className="mt-1 flex items-baseline gap-3">
-            <span className="text-3xl font-semibold text-slate-400 line-through decoration-bad/60">{pct(m?.baseline_routing_accuracy)}</span>
-            <span className="text-muted">→</span>
-            <span className="text-4xl font-bold text-accent">{now != null ? pct(now, 1) : '—'}</span>
+      {/* ---------- hero: before vs now ---------- */}
+      <div className="grid gap-4 xl:grid-cols-[1.1fr_1.9fr]">
+        <Card className="relative overflow-hidden p-6">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/10 blur-3xl" />
+          <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">Routing accuracy</div>
+          <div className="mt-2 flex items-baseline gap-3">
+            <span className="text-5xl font-semibold tracking-tight tabular text-ink"><CountUp value={accuracy != null ? accuracy * 100 : null} format={(v) => `${v.toFixed(0)}%`} /></span>
+            {accuracy != null && <Badge tone="ok">+{Math.round((accuracy - (m?.baseline_routing_accuracy ?? 0)) * 100)} pts vs baseline</Badge>}
           </div>
-        </div>
-        <p className="max-w-xl text-sm text-muted">
-          Before: in the dataset's historical logs only 18 of 200 requests reached the right agent.
-          Now: the planner's intent accuracy on our evaluation set{now == null && ' (run an evaluation to fill this in)'}.
-          {m?.routing_accuracy_original != null && <> On the 200 original queries: <b className="text-white">{pct(m.routing_accuracy_original, 1)}</b>.</>}
-        </p>
-      </Card>
-
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <KpiTile label="Requests" value={m?.total_requests ?? '—'} hint={`success ${pct(m?.success_rate)}`} icon={<Activity size={14} />} />
-        <KpiTile label="Compound completion" tone="ok" value={pct(m?.compound_completion ?? m?.live_compound_completion)}
-          hint={m?.compound_completion != null ? 'evaluation set' : 'live multi-step requests'} icon={<Layers size={14} />} />
-        <KpiTile label="p50 / p95 latency" value={<>{ms(m?.p50_latency_ms)} <span className="text-base text-muted">/ {ms(m?.p95_latency_ms)}</span></>} icon={<Timer size={14} />} />
-        <KpiTile label="Router overhead" tone="accent" value={ms(m?.avg_router_overhead_ms)} hint={m?.eval_overhead_ms != null ? `vs direct call: +${ms(m.eval_overhead_ms)}` : 'planner + routing'} icon={<Zap size={14} />} />
-        <KpiTile label="Fallback rate" tone="warn" value={pct(m?.fallback_rate)} hint="requests with ≥1 reroute" icon={<AlertTriangle size={14} />} />
-        <KpiTile label="Replans" tone="replan" value={m?.replan_count ?? '—'} hint={`recovery ${pct(m?.replan_recovery_rate)}`} icon={<GitBranch size={14} />} />
-        <KpiTile label="Healthy agents" tone="ok" value={m ? `${m.agents_healthy}/${m.agents_total}` : '—'} icon={<Gauge size={14} />} />
-        <KpiTile label="Routing accuracy" tone="accent" value={pct(m?.routing_accuracy, 1)} hint="latest evaluation" icon={<Target size={14} />} />
+          <p className="mt-1 text-xs text-muted">Share of requests sent to the right agent</p>
+          <div className="mt-5 space-y-3">
+            <CompareBar label="Before · historical logs" sub="18 of 200 requests" value={m?.baseline_routing_accuracy ?? null} cls="bg-bad/70" />
+            <CompareBar label="Meta-Router · evaluation" sub={accuracy == null ? 'run an evaluation' : m?.routing_accuracy_original != null ? `${pct(m.routing_accuracy_original, 0)} on the 200 original queries` : 'realistic query set'} value={accuracy ?? null} cls="bg-accent" />
+          </div>
+        </Card>
+        <motion.div variants={stagger(0.05)} initial="hidden" animate="show" className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+          <KpiTile label="Requests" value={m?.total_requests} icon={<Activity size={14} />} hint={<>success rate <b className="text-ink-2">{pct(m?.success_rate)}</b></>} />
+          <KpiTile label="Compound completion" value={m?.compound_completion ?? m?.live_compound_completion} format={(v) => `${(v * 100).toFixed(0)}%`} icon={<Layers size={14} />} tone="ok"
+            hint={m?.compound_completion != null ? 'multi-step evaluation set' : 'live multi-step requests'} />
+          <KpiTile label="Latency p50" value={m?.p50_latency_ms} format={ms} icon={<Timer size={14} />} hint={<>p95 <b className="text-ink-2">{ms(m?.p95_latency_ms)}</b></>} />
+          <KpiTile label="Router overhead" value={m?.avg_router_overhead_ms} format={ms} icon={<Zap size={14} />} tone="accent"
+            hint={m?.eval_overhead_ms != null ? <>vs direct call <b className="text-ink-2">+{ms(m.eval_overhead_ms)}</b></> : 'planner + routing per request'} />
+          <KpiTile label="Fallback rate" value={m?.fallback_rate} format={(v) => `${(v * 100).toFixed(0)}%`} icon={<TriangleAlert size={14} />} tone="warn" hint="requests rerouted at least once" />
+          <KpiTile label="Replans" value={m?.replan_count} icon={<GitBranch size={14} />} tone="replan" hint={<>recovery rate <b className="text-ink-2">{pct(m?.replan_recovery_rate)}</b></>} />
+        </motion.div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <BarPanel title="Avg latency per agent" subtitle="Live calls" data={latency} dataKey="value" format={ms} />
-        <BarPanel title="Success rate per agent" subtitle="Live calls (out-of-scope and timeouts count as failures)" data={success} dataKey="value" format={(v) => pct(v)} color="#34d399" />
-        <BarPanel title="Intent distribution" subtitle="Planned steps per intent" data={intents} dataKey="value" format={(v) => String(Math.round(v))} color="#818cf8" />
+      {/* ---------- charts ---------- */}
+      <div className="grid gap-4 xl:grid-cols-[1.9fr_1.1fr]">
+        <Card>
+          <CardHeader icon={<Timer size={15} />} title="End-to-end latency" subtitle="Last 60 requests, oldest to newest"
+            right={<div className="flex gap-3 text-[11px] text-muted">
+              <span className="flex items-center gap-1.5"><i className="h-0.5 w-3 rounded bg-accent" />Total</span>
+              <span className="flex items-center gap-1.5"><i className="h-0.5 w-3 rounded bg-replan" />Orchestration overhead</span>
+            </div>} />
+          <div className="h-[260px] px-2 pb-2 pt-4">
+            {trend.length < 2 ? <EmptyState icon={<Inbox size={18} />} title="Not enough traffic yet">Latency appears after a couple of requests.</EmptyState> : (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={trend} margin={{ left: 0, right: 16, top: 4, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="lat" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stopColor={c.accent} stopOpacity={0.22} />
+                      <stop offset="1" stopColor={c.accent} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid vertical={false} stroke={c.grid} />
+                  <XAxis dataKey="i" tick={{ fontSize: 11, fill: c.axis }} axisLine={false} tickLine={false} minTickGap={40} />
+                  <YAxis tick={{ fontSize: 11, fill: c.axis }} tickFormatter={(v) => ms(v)} axisLine={false} tickLine={false} width={48} />
+                  <Tooltip content={<ChartTooltip format={ms} />} cursor={{ stroke: c.line }} />
+                  <Area type="monotone" dataKey="latency" stroke={c.accent} strokeWidth={2} fill="url(#lat)" dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: c.surface }} />
+                  <Area type="monotone" dataKey="overhead" stroke={c.replan} strokeWidth={1.5} fill={c.replan} fillOpacity={0.08} dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </Card>
+        <Card>
+          <CardHeader icon={<Target size={15} />} title="Intent mix" subtitle="Planned steps by business intent" />
+          <div className="h-[260px] px-2 pb-2 pt-3">
+            {intents.length === 0 ? <EmptyState icon={<Inbox size={18} />} title="No traffic yet" /> : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={intents} layout="vertical" margin={{ left: 4, right: 20, top: 0, bottom: 0 }} barCategoryGap={5}>
+                  <XAxis type="number" hide />
+                  <YAxis type="category" dataKey="name" interval={0} tick={{ fontSize: 11, fill: c.axis }} width={116} axisLine={false} tickLine={false} />
+                  <Tooltip content={<ChartTooltip format={(v) => `${v} step${v === 1 ? '' : 's'}`} />} cursor={{ fill: c.grid, opacity: 0.5 }} />
+                  <Bar dataKey="value" fill={c.accent} radius={[0, 4, 4, 0]} maxBarSize={14} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </Card>
       </div>
 
-      <Card>
-        <CardHeader title="Recent routing decisions" subtitle="Newest first" />
+      {/* ---------- per-agent ---------- */}
+      <Card className="overflow-hidden">
+        <CardHeader icon={<Activity size={15} />} title="Agent performance" subtitle="Live calls through the orchestrator · out-of-scope replies and timeouts count as failures" />
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="border-b border-line text-muted">
-              <tr>
-                <th className="px-4 py-2 font-medium">Query</th>
-                <th className="px-4 py-2 font-medium">Steps → agent</th>
-                <th className="px-4 py-2 font-medium">Latency</th>
-                <th className="px-4 py-2 font-medium">Overhead</th>
-                <th className="px-4 py-2 font-medium">Reroutes</th>
-                <th className="px-4 py-2 font-medium">Result</th>
-              </tr>
+          <table className="w-full text-left text-[13px]">
+            <thead className="border-b border-line bg-surface-2 text-[11px] uppercase tracking-[0.05em] text-muted">
+              <tr>{['Agent', 'Status', 'Live calls', 'Success', 'Avg latency', 'Registry baseline'].map((h) => <th key={h} className="px-4 py-2.5 font-medium">{h}</th>)}</tr>
             </thead>
-            <tbody>
-              {(logs ?? []).map((l) => (
-                <tr key={l.request_id} className="border-b border-line/60 align-top">
-                  <td className="max-w-xs px-4 py-2.5 text-slate-200"><div className="line-clamp-2">{l.query}</div></td>
+            <tbody className="divide-y divide-line">
+              {agentRows.map((a) => (
+                <tr key={a.agent} className="hover:bg-surface-2">
+                  <td className="px-4 py-2.5"><span className="flex items-center gap-2.5"><AgentIcon name={a.agent} size="sm" /><span className="font-medium text-ink">{a.agent}</span></span></td>
+                  <td className="px-4 py-2.5"><StatusBadge status={a.status} /></td>
                   <td className="px-4 py-2.5">
-                    <div className="flex flex-col gap-1">
-                      {l.unsupported && <span className="text-muted">declined (unsupported)</span>}
-                      {l.steps.map((s) => (
-                        <span key={s.step_id} className="whitespace-nowrap">
-                          <Pill>{INTENT_LABEL[s.intent] ?? s.intent}</Pill>{' '}
-                          <span className={cn(s.final_agent ? 'text-white' : 'text-bad')}>{s.final_agent ?? 'failed'}</span>
-                          {s.chosen && s.final_agent && s.chosen !== s.final_agent && <span className="text-warn"> (from {s.chosen})</span>}
-                          {s.replanned && <span className="text-replan"> · replanned</span>}
-                        </span>
-                      ))}
+                    <div className="flex items-center gap-2">
+                      <div className="h-1.5 w-24 overflow-hidden rounded-full bg-surface-3">
+                        <motion.div className="h-full rounded-full bg-accent" initial={{ width: 0 }} animate={{ width: `${(a.calls / maxCalls) * 100}%` }} transition={{ duration: 0.7 }} />
+                      </div>
+                      <span className="tabular text-ink-2">{a.calls}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2.5 tabular-nums">{ms(l.total_latency_ms)}</td>
-                  <td className="px-4 py-2.5 tabular-nums">{ms(l.router_overhead_ms)}</td>
-                  <td className="px-4 py-2.5 tabular-nums">
-                    {l.fallback_count > 0 ? <span className="text-warn">{l.fallback_count} fallback</span> : '—'}
-                    {l.replan_count > 0 && <span className="text-replan"> · {l.replan_count} replan</span>}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <span className={cn('rounded-full px-2 py-0.5', l.success ? 'bg-ok/10 text-ok' : 'bg-warn/10 text-warn')}>{l.success ? 'success' : l.error ? 'error' : 'partial'}</span>
-                  </td>
+                  <td className={cn('px-4 py-2.5 tabular', a.success_rate == null ? 'text-faint' : a.success_rate >= 0.9 ? 'text-ok' : 'text-warn')}>{pct(a.success_rate)}</td>
+                  <td className="px-4 py-2.5 tabular text-ink-2">{ms(a.avg_latency_ms)}</td>
+                  <td className="px-4 py-2.5 text-xs text-muted">{pct(a.registry_success_rate, 1)} · {ms(a.registry_avg_response_time_ms)}</td>
                 </tr>
               ))}
-              {logs?.length === 0 && <tr><td colSpan={6} className="px-4 py-6 text-center text-muted">No requests yet.</td></tr>}
             </tbody>
           </table>
         </div>
       </Card>
+
+      {/* ---------- decisions ---------- */}
+      <Card className="overflow-hidden">
+        <CardHeader icon={<ArrowRight size={15} />} title="Routing decisions" subtitle="Most recent first" />
+        {!logs?.length ? <EmptyState icon={<Inbox size={18} />} title="No requests yet">Decisions appear here as soon as requests run.</EmptyState> : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-[13px]">
+              <thead className="border-b border-line bg-surface-2 text-[11px] uppercase tracking-[0.05em] text-muted">
+                <tr>{['Request', 'Routing', 'Latency', 'Overhead', 'Resilience', 'Outcome', 'When'].map((h) => <th key={h} className="px-4 py-2.5 font-medium">{h}</th>)}</tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {logs.slice(0, 15).map((l) => (
+                  <tr key={l.request_id} className="align-top hover:bg-surface-2">
+                    <td className="max-w-[280px] px-4 py-3"><div className="line-clamp-2 text-ink">{l.query}</div><div className="mt-0.5 font-mono text-[10.5px] text-faint">{l.request_id}</div></td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-1.5">
+                        {l.unsupported && <span className="text-xs text-muted">Declined · out of scope</span>}
+                        {l.steps.map((s) => (
+                          <span key={s.step_id} className="flex items-center gap-1.5 whitespace-nowrap text-xs">
+                            <span className="text-muted">{INTENT_LABEL[s.intent] ?? s.intent}</span>
+                            <ArrowRight size={11} className="text-faint" />
+                            {s.final_agent ? <><AgentIcon name={s.final_agent} size="sm" /><span className="font-medium text-ink">{s.final_agent}</span></> : <span className="text-bad">failed</span>}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 tabular text-ink-2">{ms(l.total_latency_ms)}</td>
+                    <td className="px-4 py-3 tabular text-ink-2">{ms(l.router_overhead_ms)}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {l.fallback_count > 0 && <Badge tone="warn">{l.fallback_count} fallback</Badge>}
+                        {l.replan_count > 0 && <Badge tone="replan">{l.replan_count} replan</Badge>}
+                        {!l.fallback_count && !l.replan_count && <span className="text-xs text-faint">—</span>}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      {l.success ? <span className="flex items-center gap-1 text-xs font-medium text-ok"><CircleCheck size={13} />Success</span>
+                        : <span className="flex items-center gap-1 text-xs font-medium text-warn"><TriangleAlert size={13} />{l.error ? 'Error' : 'Partial'}</span>}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-xs text-muted">{l.created_at ? timeAgo(l.created_at) : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+    </div>
+  )
+}
+
+function CompareBar({ label, sub, value, cls }: { label: string; sub: string; value: number | null; cls: string }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-baseline justify-between text-xs">
+        <span className="font-medium text-ink-2">{label}</span>
+        <span className="tabular font-semibold text-ink">{pct(value)}</span>
+      </div>
+      <div className="h-2.5 overflow-hidden rounded-full bg-surface-3">
+        <motion.div className={cn('h-full rounded-full', cls)} initial={{ width: 0 }} animate={{ width: `${(value ?? 0) * 100}%` }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }} />
+      </div>
+      <div className="mt-1 text-[11px] text-muted">{sub}</div>
     </div>
   )
 }
