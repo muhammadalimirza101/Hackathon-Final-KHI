@@ -3,6 +3,8 @@
 7 minutes + 3 minutes Q&A, strict. Presenters: **Muhammad Ali** and **Hammad-Ullah**.
 
 ## Before going on stage (by 3:15)
+Live link: https://hackathon-final-khi.onrender.com
+
 - [ ] Open the Render URL 5 minutes early (UptimeRobot keeps it warm; first load after sleep takes ~1 min)
 - [ ] Open the live link in a fresh incognito window. Visit all 4 pages once to warm up.
 - [ ] Registry → **Reset all to original status**

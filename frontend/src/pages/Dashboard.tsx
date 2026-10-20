@@ -106,7 +106,7 @@ export default function Dashboard({ theme }: { theme: Theme }) {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={intents} layout="vertical" margin={{ left: 4, right: 20, top: 0, bottom: 0 }} barCategoryGap={5}>
                   <XAxis type="number" hide />
-                  <YAxis type="category" dataKey="name" interval={0} tick={{ fontSize: 11, fill: c.axis }} width={116} axisLine={false} tickLine={false} />
+                  <YAxis type="category" dataKey="name" interval={0} tick={{ fontSize: 11, fill: c.axis }} width={132} axisLine={false} tickLine={false} />
                   <Tooltip content={<ChartTooltip format={(v) => `${v} step${v === 1 ? '' : 's'}`} />} cursor={{ fill: c.grid, opacity: 0.5 }} />
                   <Bar dataKey="value" fill={c.accent} radius={[0, 4, 4, 0]} maxBarSize={14} />
                 </BarChart>

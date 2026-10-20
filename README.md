@@ -6,7 +6,7 @@ One entry point for 12 specialist AI agents. The user types a request in plain l
 
 > In the dataset's own historical logs, only **18 of 200 requests (9%)** reached the right agent and 25% had to be rerouted.
 
-**Team:** Muhammad Ali · Hammad-Ullah
+**Live demo:** https://hackathon-final-khi.onrender.com  ·  **Team:** Muhammad Ali · Hammad-Ullah
 
 ![Architecture](docs/architecture.png)
 
