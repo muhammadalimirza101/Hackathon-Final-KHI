@@ -1,4 +1,5 @@
 """FastAPI app: API routes under /api (section 11 of PROJECT_PLAN.md) and the React build at /."""
+import asyncio
 import json
 import logging
 from contextlib import asynccontextmanager
@@ -33,7 +34,19 @@ async def lifespan(app: FastAPI):
     state["router"] = router
     state["orchestrator"] = Orchestrator(sorted(agents, key=lambda a: a["agent_id"]), cache, router)
     log.info("ready: %d agents, storage=%s, model=%s", len(agents), db.backend_name(), config.MODEL_NAME)
+    # The first LLM call after a cold start is slow (lazy imports, connection setup); pay it before a user does.
+    warm = asyncio.create_task(_warm_up(state["orchestrator"]))
     yield
+    warm.cancel()
+
+
+async def _warm_up(orch: Orchestrator):
+    from .agents.planner import make_plan
+    try:
+        await make_plan(orch.planner, "What is the leave policy?", False)
+        log.info("warm-up call done")
+    except Exception as e:  # noqa: BLE001
+        log.warning("warm-up failed: %s", e)
 
 
 app = FastAPI(title="Meta-Router", lifespan=lifespan)

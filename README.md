@@ -69,12 +69,16 @@ Google ADK (Python) · OpenAI `gpt-5-mini` via LiteLLM · FastAPI · pandas · F
 - `data/demo_sales.csv` and `data/samples/` hold demo attachments. **Intent labels were never changed.**
 
 ## Evaluation
-| Metric | Result |
-|---|---|
-| Routing accuracy (realistic set) | _run on deployed version_ |
-| Routing accuracy (200 original queries) | _…_ |
-| Compound task completion | _…_ |
-| Latency overhead vs direct agent call | _…_ |
+Local run on 20 Oct 2026, `gpt-5-mini`, real LLM calls (re-run on the deployed version before presenting).
+
+| Metric | Result | Notes |
+|---|---|---|
+| Routing accuracy, 32 realistic queries | **100%** (32/32) | baseline in the dataset's logs: **9%** |
+| Routing accuracy, 200 original queries | **98%** (196/200) | 4 synthetic queries declined as unsupported |
+| Agent accuracy (best available agent chosen) | **100%** / **98%** | maintenance agents count as correctly skipped |
+| Compound task completion, 10 multi-step queries | **100%** (10/10) | earlier runs 70–80%; fixed a cold-start planner timeout and planner adding unrequested steps (the planner prompt was tuned on these failures) |
+| Latency overhead vs direct agent call | **+3.1 s** avg (10 queries) | planner ≈ 1.5 s, routing < 5 ms; direct 6.4 s → orchestrated 9.5 s |
+| Avg latency, compound query | 15.4 s | 2–3 agent calls in sequence |
 
 Run from the Evaluation page or `cd backend && python -m eval.run_eval realistic|original|compound`.
 

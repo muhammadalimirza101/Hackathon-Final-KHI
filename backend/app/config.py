@@ -16,7 +16,7 @@ MODEL_NAME = os.getenv("MODEL_NAME", "gpt-5-mini")
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "")
 
 STEP_TIMEOUT_S = float(os.getenv("STEP_TIMEOUT_S", "12"))
-PLANNER_TIMEOUT_S = float(os.getenv("PLANNER_TIMEOUT_S", "20"))
+PLANNER_TIMEOUT_S = float(os.getenv("PLANNER_TIMEOUT_S", "30"))
 MAX_ATTEMPTS_PER_STEP = int(os.getenv("MAX_ATTEMPTS_PER_STEP", "3"))
 MAX_REPLANS_PER_QUERY = int(os.getenv("MAX_REPLANS_PER_QUERY", "2"))
 # "minimal" keeps gpt-5 family models fast; dropped for models that don't support it.
