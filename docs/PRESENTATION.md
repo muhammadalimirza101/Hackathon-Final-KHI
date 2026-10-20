@@ -3,12 +3,12 @@
 7 minutes + 3 minutes Q&A, strict. Presenters: **Muhammad Ali** and **Hammad-Ullah**.
 
 ## Before going on stage (by 3:15)
-- [ ] `gcloud run services update meta-router --region us-central1 --min-instances 1`
+- [ ] Open the Render URL 5 minutes early (UptimeRobot keeps it warm; first load after sleep takes ~1 min)
 - [ ] Open the live link in a fresh incognito window. Visit all 4 pages once to warm up.
 - [ ] Registry → **Reset all to original status**
 - [ ] Have `data/demo_sales.csv` and `data/samples/vendor_contract.txt` ready in a folder you can reach fast
 - [ ] Backup screen recording open in another tab
-- [ ] After presenting: set `--min-instances 0` again
+- [ ] Don't push to `main` in the last 15 minutes (every push redeploys Render)
 
 ## Slides (one idea each)
 
@@ -18,7 +18,7 @@
 | 2 | 1:00 | **Solution** (architecture diagram `docs/architecture.png`) | One entry point. Planner understands and splits the request → Router picks the best healthy agent per step in code → Orchestrator chains steps, falls back, replans → Dashboard shows every decision. |
 | 3 | 2:00 | **Live demo** (below) | 3 minutes. |
 | 4 | 5:00 | **Results** | Routing accuracy **100%** on realistic queries and **98%** on the 200 given ones, vs **9%** baseline · compound completion **10/10** · overhead **+3.1 s** vs direct call (mostly one planner call; routing itself < 5 ms). |
-| 5 | 5:30 | **Tech + GCP** | Google ADK agents, OpenAI gpt-5-mini via LiteLLM, FastAPI, React, Firestore, Cloud Run (one container), Secret Manager, built in Google Antigravity. |
+| 5 | 5:30 | **Tech** | Built in Google Antigravity with Google ADK agents, OpenAI gpt-5-mini via LiteLLM, FastAPI, React. Firestore on Google Cloud. Hosted on Render because the GCP credit couldn't be redeemed; the same Dockerfile deploys to Cloud Run with one command. |
 | 6 | 6:00 | **Scalability + next steps** | New agent = one registry entry + one intent-map line, no code. Hundreds of agents: embedding search → score top candidates. Small classifier for simple queries, LLM planner only for compound ones. Learn routing weights from the satisfaction column. |
 
 ## Live demo (3 minutes)

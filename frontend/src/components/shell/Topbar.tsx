@@ -38,7 +38,7 @@ export function Topbar({ theme, onToggleTheme, onOpenPalette, health }: {
         {online ? 'Platform online' : 'Connecting'}
       </div>
       <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] text-muted max-2xl:hidden" title="Deployment">
-        <Cloud size={13} /> Production · us-central1
+        <Cloud size={13} /> Production · Render
         {health && <span className="text-faint">· {health.model}</span>}
       </div>
 

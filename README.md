@@ -59,7 +59,7 @@ Routing runs in code, not by an LLM choosing: it's fast, cheap, predictable and 
 Attachments are passed to tools through ADK session state, so the LLM never copies large files into tool calls. The cleaned CSV from DataCleaner is chained into the next step automatically.
 
 ## Tech stack
-Google ADK (Python) · OpenAI `gpt-5-mini` via LiteLLM · FastAPI · pandas · Firestore · Cloud Run · React + TypeScript + Vite + Tailwind + Recharts · built in Google Antigravity.
+Google ADK (Python) · OpenAI `gpt-5-mini` via LiteLLM · FastAPI · pandas · Firestore (Google Cloud) · Docker on Render · React + TypeScript + Vite + Tailwind + Recharts · built in Google Antigravity.
 
 ## What we enriched in the data
 - `data/original/` keeps the two given files **untouched**.
@@ -87,7 +87,7 @@ Run from the Evaluation page or `cd backend && python -m eval.run_eval realistic
 # backend
 cd backend
 python -m venv .venv && .venv/Scripts/activate      # macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp ../.env.example .env                             # fill OPENAI_API_KEY (GOOGLE_CLOUD_PROJECT optional)
 uvicorn app.main:app --reload --port 8000
 pytest -q tests
@@ -97,20 +97,23 @@ cd frontend && npm install && npm run dev            # http://localhost:5173, /a
 ```
 Without `GOOGLE_CLOUD_PROJECT` the backend uses an in-memory store, so no GCP is needed for development.
 
-## Deploy (Cloud Run)
-One container: FastAPI serves `/api` and the React build at `/`. See [FIRESTORE_SETUP.md](FIRESTORE_SETUP.md).
-```bash
-gcloud run deploy meta-router --source . --region us-central1 --allow-unauthenticated \
-  --memory 1Gi --timeout 300 \
-  --set-secrets OPENAI_API_KEY=openai-key:latest \
-  --set-env-vars GOOGLE_CLOUD_PROJECT=<PROJECT_ID>,MODEL_NAME=gpt-5-mini
-```
+## Deployment
+- **Hosted on Render** as a single Docker container: FastAPI serves the API under `/api` and the React build at `/` (one URL, no CORS). One uvicorn worker, because agent statuses and metrics are cached in memory.
+- **Database: Firestore on Google Cloud** (project `ps-05-512207`). On Render the service-account key is a secret file (`GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/firebase-key.json`); locally it uses Application Default Credentials. Agents are seeded automatically on first start.
+- **Built in Google Antigravity** with Google ADK.
+- `/api/health` is a free, instant uptime probe (no LLM or database calls); UptimeRobot pings it every 5 minutes so the free instance stays awake.
+- The same Dockerfile deploys to Google Cloud Run with one command:
+  ```bash
+  gcloud run deploy meta-router --source . --region us-central1 --allow-unauthenticated
+  ```
+
+Setup steps: [DEPLOY_RENDER.md](DEPLOY_RENDER.md). Environment variables: `OPENAI_API_KEY`, `MODEL_NAME`, `GOOGLE_CLOUD_PROJECT`, `STEP_TIMEOUT_S`, `GOOGLE_APPLICATION_CREDENTIALS` (or `FIREBASE_CREDENTIALS_JSON`).
 
 ## Scalability
 - A new agent = one registry entry + one intent-map line. No code changes.
 - Hundreds of agents: embedding search picks top candidates, the router scores only those.
 - A small classifier for simple single-intent queries, with the LLM planner only for compound or unclear ones, cuts most of the overhead.
-- Pub/Sub for long-running jobs; Cloud Run autoscaling; learn routing weights from user satisfaction data.
+- Pub/Sub for long-running jobs; autoscaling containers (e.g. Cloud Run); learn routing weights from user satisfaction data.
 
 ## Presentation
 Script, demo steps and Q&A prep: [docs/PRESENTATION.md](docs/PRESENTATION.md).

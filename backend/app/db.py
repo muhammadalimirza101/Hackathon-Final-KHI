@@ -1,6 +1,7 @@
 """Firestore access. Falls back to an in-memory store when GOOGLE_CLOUD_PROJECT is not set (local dev without GCP)."""
 import json
 import logging
+import os
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Optional
@@ -36,13 +37,35 @@ _client = None
 _mem = _MemoryStore()
 
 
-def _fs():
+def init():
+    """Create the Firestore client once (called at startup).
+
+    Credentials, in order:
+    1. FIREBASE_CREDENTIALS_JSON env var holding the full service-account JSON (Hugging Face Spaces plan B).
+    2. Application Default Credentials: GOOGLE_APPLICATION_CREDENTIALS (Render secret file) or
+       `gcloud auth application-default login` on a laptop.
+    The project always comes from GOOGLE_CLOUD_PROJECT. Credential contents are never logged.
+    """
     global _client
+    if not config.USE_FIRESTORE or _client is not None:
+        return
+    from google.cloud import firestore
+    creds = None
+    raw = os.getenv("FIREBASE_CREDENTIALS_JSON")
+    if raw:
+        from google.oauth2 import service_account
+        creds = service_account.Credentials.from_service_account_info(json.loads(raw))
+        log.info("Firestore: using service account from FIREBASE_CREDENTIALS_JSON")
+    else:
+        log.info("Firestore: using Application Default Credentials")
+    _client = firestore.Client(project=config.GOOGLE_CLOUD_PROJECT, credentials=creds)
+
+
+def _fs():
     if not config.USE_FIRESTORE:
         return None
     if _client is None:
-        from google.cloud import firestore
-        _client = firestore.Client(project=config.GOOGLE_CLOUD_PROJECT)
+        init()
     return _client
 
 

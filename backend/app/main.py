@@ -22,6 +22,7 @@ state: dict = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    db.init()  # Firestore client is created once here, not per request
     agents = db.get_agents()
     if not agents:
         n = db.seed_agents()
@@ -145,6 +146,13 @@ async def get_sample(name: str):
 
 @app.get("/api/health")
 async def health():
+    """Uptime probe (pinged every 5 min). Must stay instant and free: no OpenAI or Firestore calls."""
+    return {"ok": True}
+
+
+@app.get("/api/info")
+async def info():
+    """Static deployment info for the UI header (no external calls)."""
     return {"ok": True, "storage": db.backend_name(), "model": config.MODEL_NAME, "llm_key_set": bool(config.OPENAI_API_KEY)}
 
 

@@ -23,7 +23,7 @@ export const api = {
     if (!res.ok) throw new Error(`Could not load sample ${name}`)
     return res.text()
   },
-  health: () => json<{ ok: boolean; storage: string; model: string; llm_key_set: boolean }>('/api/health'),
+  info: () => json<{ ok: boolean; storage: string; model: string; llm_key_set: boolean }>('/api/info'),
 }
 
 /**

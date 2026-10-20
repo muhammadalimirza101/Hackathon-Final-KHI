@@ -1,3 +1,5 @@
+> **Deployment changed:** the app is hosted on Render, not Cloud Run. Follow [DEPLOY_RENDER.md](DEPLOY_RENDER.md). Sections 1 and 3 below (gcloud login, Firestore database) still apply; sections 4–6 are only for a future Cloud Run deploy.
+
 # GCP + Firestore setup
 
 Everything goes in **`us-central1`**. Do **not** enable Vertex AI. All LLM calls use the OpenAI key.

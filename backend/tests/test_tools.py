@@ -30,10 +30,10 @@ def test_clean_then_analyze_sales_chains_through_state():
 def test_scan_code_finds_secrets_and_unsafe_patterns():
     r = tools.scan_code(Ctx(_read("samples/app_code.py")))
     types = {f["type"] for f in r["findings"]}
-    assert "OpenAI-style API key" in types
+    assert "AWS access key" in types
     assert "Use of eval()" in types
     assert any("SQL" in t for t in types)
-    assert all("NOT_REAL" not in f["snippet"] for f in r["findings"])  # secrets are masked
+    assert all("IOSFODNN7" not in f["snippet"] for f in r["findings"])  # secrets are masked
 
 
 def test_detect_pii_finds_cnic_email_phone():

@@ -1,7 +1,7 @@
 import sqlite3
 import requests
 
-OPENAI_API_KEY = "sk-DEMO_FAKE_KEY_NOT_REAL_0000"
+AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
 DB_PASSWORD = "admin123"
 
 def login(username, password):

@@ -87,7 +87,7 @@ export function Sidebar({ agents }: { agents: Agent[] | null }) {
         </div>
       </div>
       <div className="border-t border-sidebar-line px-4 py-3 text-[10.5px] text-sidebar-muted max-lg:hidden">
-        Google ADK · Cloud Run · Firestore
+        Google ADK · Render · Firestore
       </div>
     </aside>
   )

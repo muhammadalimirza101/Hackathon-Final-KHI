@@ -21,7 +21,7 @@ const page = {
 export default function App() {
   const { theme, toggle } = useTheme()
   const { data: agents, refresh } = usePoll(api.agents, 10000)
-  const { data: health } = usePoll(api.health, 30000)
+  const { data: health } = usePoll(api.info, 30000)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const { pathname } = useLocation()
 
